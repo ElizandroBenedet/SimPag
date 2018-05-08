@@ -5,6 +5,7 @@
 #include <string>
 #include <vector>
 #include <list>
+#include <chrono>
 
 namespace SimPag {
 
@@ -16,6 +17,8 @@ namespace SimPag {
 	using namespace std;
 	using namespace System::IO;
 	using namespace System::Collections::Generic;
+
+	
 
 
 
@@ -110,6 +113,7 @@ namespace SimPag {
 	private: System::Windows::Forms::ListBox^  listBox7;
 	private: System::Windows::Forms::ListBox^  listBox8;
 	private: System::Windows::Forms::Timer^  timer1;
+	private: System::Windows::Forms::NumericUpDown^  numericUpDown1;
 	private: System::ComponentModel::IContainer^  components;
 
 
@@ -163,7 +167,9 @@ namespace SimPag {
 			this->listBox7 = (gcnew System::Windows::Forms::ListBox());
 			this->listBox8 = (gcnew System::Windows::Forms::ListBox());
 			this->timer1 = (gcnew System::Windows::Forms::Timer(this->components));
+			this->numericUpDown1 = (gcnew System::Windows::Forms::NumericUpDown());
 			this->panel1->SuspendLayout();
+			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->numericUpDown1))->BeginInit();
 			this->SuspendLayout();
 			// 
 			// button2
@@ -374,7 +380,6 @@ namespace SimPag {
 			// listBox3
 			// 
 			this->listBox3->FormattingEnabled = true;
-			
 			this->listBox3->Location = System::Drawing::Point(408, 37);
 			this->listBox3->Name = L"listBox3";
 			this->listBox3->Size = System::Drawing::Size(52, 212);
@@ -391,7 +396,6 @@ namespace SimPag {
 			// listBox2
 			// 
 			this->listBox2->FormattingEnabled = true;
-			
 			this->listBox2->Location = System::Drawing::Point(512, 37);
 			this->listBox2->Name = L"listBox2";
 			this->listBox2->Size = System::Drawing::Size(52, 212);
@@ -409,7 +413,6 @@ namespace SimPag {
 			// listBox4
 			// 
 			this->listBox4->FormattingEnabled = true;
-		
 			this->listBox4->Location = System::Drawing::Point(564, 37);
 			this->listBox4->Name = L"listBox4";
 			this->listBox4->Size = System::Drawing::Size(52, 212);
@@ -418,7 +421,6 @@ namespace SimPag {
 			// listBox6
 			// 
 			this->listBox6->FormattingEnabled = true;
-			
 			this->listBox6->Location = System::Drawing::Point(616, 37);
 			this->listBox6->Name = L"listBox6";
 			this->listBox6->Size = System::Drawing::Size(52, 212);
@@ -427,7 +429,6 @@ namespace SimPag {
 			// listBox5
 			// 
 			this->listBox5->FormattingEnabled = true;
-			
 			this->listBox5->Location = System::Drawing::Point(356, 37);
 			this->listBox5->Name = L"listBox5";
 			this->listBox5->Size = System::Drawing::Size(52, 212);
@@ -444,7 +445,6 @@ namespace SimPag {
 			// listBox8
 			// 
 			this->listBox8->FormattingEnabled = true;
-		
 			this->listBox8->Location = System::Drawing::Point(668, 37);
 			this->listBox8->Name = L"listBox8";
 			this->listBox8->Size = System::Drawing::Size(52, 212);
@@ -452,8 +452,17 @@ namespace SimPag {
 			// 
 			// timer1
 			// 
-			this->timer1->Interval = 1000;
+			this->timer1->Interval = 5000;
 			this->timer1->Tick += gcnew System::EventHandler(this, &TelaSim::timer1_Tick);
+			// 
+			// numericUpDown1
+			// 
+			this->numericUpDown1->Location = System::Drawing::Point(496, 337);
+			this->numericUpDown1->Minimum = System::Decimal(gcnew cli::array< System::Int32 >(4) { 1, 0, 0, 0 });
+			this->numericUpDown1->Name = L"numericUpDown1";
+			this->numericUpDown1->Size = System::Drawing::Size(120, 20);
+			this->numericUpDown1->TabIndex = 34;
+			this->numericUpDown1->Value = System::Decimal(gcnew cli::array< System::Int32 >(4) { 1, 0, 0, 0 });
 			// 
 			// TelaSim
 			// 
@@ -461,6 +470,7 @@ namespace SimPag {
 			this->AutoScaleMode = System::Windows::Forms::AutoScaleMode::Font;
 			this->BackColor = System::Drawing::SystemColors::Control;
 			this->ClientSize = System::Drawing::Size(742, 478);
+			this->Controls->Add(this->numericUpDown1);
 			this->Controls->Add(this->listBox8);
 			this->Controls->Add(this->listBox7);
 			this->Controls->Add(this->panel1);
@@ -489,11 +499,13 @@ namespace SimPag {
 			this->Load += gcnew System::EventHandler(this, &TelaSim::TelaSim_Load);
 			this->panel1->ResumeLayout(false);
 			this->panel1->PerformLayout();
+			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->numericUpDown1))->EndInit();
 			this->ResumeLayout(false);
 			this->PerformLayout();
 
 		}
 #pragma endregion
+
 
 		public: void InitializaVariaveis(String^ diretorio, String^ pag, String^ mem, int ordem_fila) {
 			// Inicializa listas e afins
@@ -696,93 +708,75 @@ namespace SimPag {
 			case 8:
 				pos = listBox7->FindString(" ");
 				if (pos != -1) {
-					listBox7->Items->RemoveAt(pos);
-					listBox7->Items->Insert(pos, "P " + processo->ID + " - " + pag_mem[aux]->processo->tam.ToString());
+					listBox7->Items[pos] = (pos, "P " + processo->ID + " - " + pag_mem[aux]->processo->tam.ToString());
 					pag_mem[aux]->listbox = 7;
 					break;
 				}
 				pos = listBox5->FindString(" ");
 				if (pos != -1) {
-					listBox5->Items->RemoveAt(pos);
-					listBox5->Items->Insert(pos, "P " + processo->ID + " - " + pag_mem[aux]->processo->tam.ToString());
+					listBox5->Items[pos] = (pos, "P " + processo->ID + " - " + pag_mem[aux]->processo->tam.ToString());
 					pag_mem[aux]->listbox = 5;
 					break;
 				}
-
 				pos = listBox3->FindString(" ");
 				if (pos != -1) {
-					listBox3->Items->RemoveAt(pos);
-					listBox3->Items->Insert(pos, "P " + processo->ID + " - " + pag_mem[aux]->processo->tam.ToString());
+					listBox3->Items[pos] = (pos, "P " + processo->ID + " - " + pag_mem[aux]->processo->tam.ToString());
 					pag_mem[aux]->listbox = 3;
 					break;
 				}
-
 				pos = listBox1->FindString(" ");
 				if (pos != -1) {
-					listBox1->Items->RemoveAt(pos);
-					listBox1->Items->Insert(pos, "P " + processo->ID + " - " + pag_mem[aux]->processo->tam.ToString());
+					listBox1->Items[pos] = (pos, "P " + processo->ID + " - " + pag_mem[aux]->processo->tam.ToString());
 					pag_mem[aux]->listbox = 1;
 					break;
 				}
-
 				pos = listBox2->FindString(" ");
 				if (pos != -1) {
-					listBox2->Items->RemoveAt(pos);
-					listBox2->Items->Insert(pos, "P " + processo->ID + " - " + pag_mem[aux]->processo->tam.ToString());
+					listBox2->Items[pos] = (pos, "P " + processo->ID + " - " + pag_mem[aux]->processo->tam.ToString());
 					pag_mem[aux]->listbox = 2;
 					break;
 				}
-
 				pos = listBox4->FindString(" ");
 				if (pos != -1) {
-					listBox4->Items->RemoveAt(pos);
-					listBox4->Items->Insert(pos, "P " + processo->ID + " - " + pag_mem[aux]->processo->tam.ToString());
+					listBox4->Items[pos] = (pos, "P " + processo->ID + " - " + pag_mem[aux]->processo->tam.ToString());
 					pag_mem[aux]->listbox = 4;
 					break;
 				}
-
 				pos = listBox6->FindString(" ");
 				if (pos != -1) {
-					listBox6->Items->RemoveAt(pos);
-					listBox6->Items->Insert(pos, "P " + processo->ID + " - " + pag_mem[aux]->processo->tam.ToString());
+					listBox6->Items[pos] = (pos, "P " + processo->ID + " - " + pag_mem[aux]->processo->tam.ToString());
 					pag_mem[aux]->listbox = 6;
 					break;
 				}
-
 				pos = listBox8->FindString(" ");
 				if (pos != -1) {
-					listBox8->Items->RemoveAt(pos);
-					listBox8->Items->Insert(pos, "P " + processo->ID + " - " + pag_mem[aux]->processo->tam.ToString());
+					listBox8->Items[pos] = (pos, "P " + processo->ID + " - " + pag_mem[aux]->processo->tam.ToString());
 					pag_mem[aux]->listbox = 8;
 					break;
 				}
+				
 			case 4:
 				pos = listBox3->FindString(" ");
 				if (pos != -1) {
-					listBox3->Items->RemoveAt(pos);
-					listBox3->Items->Insert(pos, "P " + processo->ID + " - " + pag_mem[aux]->processo->tam.ToString());
+					listBox3->Items[pos] = (pos, "P " + processo->ID + " - " + pag_mem[aux]->processo->tam.ToString());
 					pag_mem[aux]->listbox = 3;
 					break;
 				}
-
 				pos = listBox1->FindString(" ");
 				if (pos != -1) {
-					listBox1->Items->RemoveAt(pos);
-					listBox1->Items->Insert(pos, "P " + processo->ID + " - " + pag_mem[aux]->processo->tam.ToString());
+					listBox1->Items[pos] = (pos, "P " + processo->ID + " - " + pag_mem[aux]->processo->tam.ToString());
 					pag_mem[aux]->listbox = 1;
 					break;
 				}
 				pos = listBox2->FindString(" ");
 				if (pos != -1) {
-					listBox2->Items->RemoveAt(pos);
-					listBox2->Items->Insert(pos, "P " + processo->ID + " - " + pag_mem[aux]->processo->tam.ToString());
+					listBox2->Items[pos] = (pos, "P " + processo->ID + " - " + pag_mem[aux]->processo->tam.ToString());
 					pag_mem[aux]->listbox = 2;
 					break;
 				}
 				pos = listBox4->FindString(" ");
 				if (pos != -1) {
-					listBox4->Items->RemoveAt(pos);
-					listBox4->Items->Insert(pos, "P " + processo->ID + " - " + pag_mem[aux]->processo->tam.ToString());
+					listBox4->Items[pos] = (pos, "P " + processo->ID + " - " + pag_mem[aux]->processo->tam.ToString());
 					pag_mem[aux]->listbox = 4;
 					break;
 				}
@@ -790,24 +784,20 @@ namespace SimPag {
 			case 2:
 				pos = listBox1->FindString(" ");
 				if (pos != -1) {
-					listBox1->Items->RemoveAt(pos);
-					listBox1->Items->Insert(pos, "P " + processo->ID + " - " + pag_mem[aux]->processo->tam.ToString());
+					listBox1->Items[pos] = (pos, "P " + processo->ID + " - " + pag_mem[aux]->processo->tam.ToString());
 					pag_mem[aux]->listbox = 1;
 					break;
 				}
-
 				pos = listBox2->FindString(" ");
 				if (pos != -1) {
-					listBox2->Items->RemoveAt(pos);
-					listBox2->Items->Insert(pos, "P " + processo->ID + " - " + pag_mem[aux]->processo->tam.ToString());
+					listBox2->Items[pos] = (pos, "P " + processo->ID + " - " + pag_mem[aux]->processo->tam.ToString());
 					pag_mem[aux]->listbox = 2;
 					break;
 				}
 			case 1:
 				pos = listBox1->FindString(" ");
 				if (pos != -1) {
-					listBox1->Items->RemoveAt(pos);
-					listBox1->Items->Insert(pos, "P " + processo->ID + " - " + pag_mem[aux]->processo->tam.ToString());
+					listBox1->Items[pos] = (pos, "P " + processo->ID + " - " + pag_mem[aux]->processo->tam.ToString());
 					pag_mem[aux]->listbox = 1;
 					break;
 				}
@@ -1046,8 +1036,10 @@ namespace SimPag {
 
 
 	private: System::Void timer1_Tick(System::Object^  sender, System::EventArgs^  e) {
-		if (aux_timer == 1)
+		if (aux_timer == 1) {
+			timer1->Interval = 5000 / System::Convert::ToInt32(numericUpDown1->Value);
 			simulacao();
+		}
 	}
 	private: System::Void button2_Click_1(System::Object^  sender, System::EventArgs^  e) {
 		if (button2->Text == "Iniciar") {

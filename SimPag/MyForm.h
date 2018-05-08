@@ -319,5 +319,5 @@ namespace SimPag {
 			tela->Show();
 		}
 	}
-};
+	};
 }

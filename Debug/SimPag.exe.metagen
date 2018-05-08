@@ -20,6 +20,7 @@ Class SimPag.TelaSim: AutoLayout, AnsiClass, Class, Public, BeforeFieldInit
     Void .ctor(System.String, System.String, System.String, Int32): PrivateScope, Public, HideBySig, SpecialName, RTSpecialName
     Void .ctor(): PrivateScope, Public, HideBySig, SpecialName, RTSpecialName
   Methods:
+    InitializaVariaveis(String, String, String, Int32): PrivateScope, Public, HideBySig
     verifica_listbox(vector<int\,std::allocator<int> >*, ListBox): PrivateScope, Public, HideBySig
     insere_mapa(Processo): PrivateScope, Public, HideBySig
     limpa_mem(Pagina): PrivateScope, Public, HideBySig

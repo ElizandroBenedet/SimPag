@@ -48,135 +48,12 @@ namespace SimPag {
 			//
 		}
 		TelaSim(String^ diretorio, String^ pag, String^ mem, int ordem_fila) {
-			
-			
+
+			this->diretorio = diretorio;
 			InitializeComponent();
+			InitializaVariaveis(diretorio, pag, mem, ordem_fila);
 
-			// Inicializa listas e afins
-			this->modo_fila = ordem_fila;
-			try {
-			StreamReader^ arq = gcnew StreamReader(diretorio);
-			try {
-			String^ line;
-			line = arq->ReadLine();
-			string aux;
-			vector <string> linha;
-			lista_proc = gcnew List<Processo^>();
-
-			while (line = arq->ReadLine())
-			{
-			listbox_lista_proc->Items->Add(line);
-			aux = msclr::interop::marshal_as< std::string >(line);
-			linha = explode(aux, ',');
-			Processo^ processo = gcnew Processo();
-			processo->ID = msclr::interop::marshal_as< System::String^ >(linha[0]);
-			processo->tempo_cria = std::stoi(linha[1]);
-			processo->tempo_remove = std::stoi(linha[2]) - processo->tempo_cria - 1;
-			processo->tam = std::stoi(linha[3]);
-			lista_proc->Add(processo);
-			}
-
-			lb_qtd_lista_proc->Text = listbox_lista_proc->Items->Count.ToString();
-			arq->Close();
-			}
-			finally
-			{
-			if (arq)
-			delete (IDisposable^)arq;
-			}
-
-			}
-			catch (Exception^ e)
-			{
-			// Let the user know what went wrong.
-			MessageBox::Show("Erro ao abrir o arquivo " + diretorio + "\n" + e->Message);
-
-			}
-
-
-
-
-			tam_mem = System::Convert::ToInt32(mem);
-			tam_pag = System::Convert::ToInt32(pag);
-			double paginas = tam_mem / tam_pag;			// numero de páginas na memoria fisica
-
-			Pagina ^bloco_mem;
-			pag_mem = gcnew List<Pagina^>();
-			int colun = arredondamento(paginas / 16.0);	// qtd de colunas
-			qtd_listBox = colun;
-			if (paginas == 4) {
-				this->listBox1->Items->AddRange(gcnew cli::array< System::Object^  >(4) {
-					L" ", L" ", L" ", L" "
-				});
-				for (int j = 0; j < 4; j++) {
-					bloco_mem = gcnew Pagina();
-					bloco_mem->ocupado = false;
-					pag_mem->Add(bloco_mem);
-				}
-			}
-			else if (paginas == 8) {
-				this->listBox1->Items->AddRange(gcnew cli::array< System::Object^  >(8) {
-					L" ", L" ", L" ", L" ", L" ", L" ", L" ", L" "
-				});
-				for (int j = 0; j < 8; j++) {
-					bloco_mem = gcnew Pagina();
-					bloco_mem->ocupado = false;
-					pag_mem->Add(bloco_mem);
-				}
-			}
-			else {
-				this->listBox1->Items->AddRange(gcnew cli::array< System::Object^  >(16) {
-					L" ", L" ", L" ", L" ", L" ", L" ", L" ", L" ",
-						L" ", L" ", L" ", L" ", L" ", L" ", L" ", L" "
-				});
-				for (int i = 0; i < colun; i++) {
-					for (int j = 0; j < 16; j++) {
-						bloco_mem = gcnew Pagina();
-						bloco_mem->ocupado = false;
-						pag_mem->Add(bloco_mem);
-					}
-				}
-			}
-
-			lb_unidade_tempo->Text = "0";
-			lb_tam_mem->Text = mem;
-			lb_tam_pag->Text = pag;
-			lb_pag_livre->Text = paginas.ToString();
-			lb_qtd_log->Text = "0";
-			lb_qtd_mapa->Text = "0";
-			lb_qtd_fila_proc->Text = "0";
-
-
-
-			switch (colun)
-			{
-			case 1:
-			listBox2->Visible = false;
-			listBox3->Visible = false;
-			listBox4->Visible = false;
-			listBox5->Visible = false;
-			listBox6->Visible = false;
-			listBox7->Visible = false;
-			listBox8->Visible = false;
-			case 2:
-			listBox3->Visible = false;
-			listBox4->Visible = false;
-			listBox5->Visible = false;
-			listBox6->Visible = false;
-			listBox7->Visible = false;
-			listBox8->Visible = false;
-			case 4:
-			listBox5->Visible = false;
-			listBox6->Visible = false;
-			listBox7->Visible = false;
-			listBox8->Visible = false;
-
-			default:
-			break;
-			}
 			
-
-
 		}
 
 	protected:
@@ -190,49 +67,50 @@ namespace SimPag {
 				delete components;
 			}
 		}
-		private: int aux_timer = 1;
-		private: int qtd_proc_mapa = 0;
-		private: int qtd_pag_ocu = 0;
-		private: int qtd_listBox;
-		private: int tam_mem;
-		private: int tam_pag;
-		private: List <Pagina^>^ pag_mem;
-		private: List<Processo^>^ lista_proc;
-		private: int unidade_tempo = 0;
-		private: int modo_fila;
-		private: System::Windows::Forms::Button^  button2;
-		private: System::Windows::Forms::Label^  label99;
-		private: System::Windows::Forms::Button^  button3;
-		private: System::Windows::Forms::ListBox^  listbox_log;
-		private: System::Windows::Forms::Label^  label2;
-		private: System::Windows::Forms::ListBox^  listbox_lista_proc;
-		private: System::Windows::Forms::Label^  label1;
-		private: System::Windows::Forms::Label^  label5;
-		private: System::Windows::Forms::ListBox^  listBox_fila_proc;
-		private: System::Windows::Forms::Label^  lb_qtd_lista_proc;				
-		private: System::Windows::Forms::Label^  lb_qtd_log;
-		private: System::Windows::Forms::Label^  lb_qtd_fila_proc;
-		private: System::Windows::Forms::Label^  lb_unidade_tempo;
-		private: System::Windows::Forms::Label^  lb_pag_livre;
-		private: System::Windows::Forms::Label^  label8;
-		private: System::Windows::Forms::Label^  label9;
-		private: System::Windows::Forms::Label^  label10;
-		private: System::Windows::Forms::Label^  lb_tam_pag;
-		private: System::Windows::Forms::Label^  lb_tam_mem;
-		private: System::Windows::Forms::Button^  button1;
-		private: System::Windows::Forms::Panel^  panel1;
-		private: System::Windows::Forms::Label^  label3;
-		private: System::Windows::Forms::ListBox^  listBox3;
-		private: System::Windows::Forms::ListBox^  listBox1;
-		private: System::Windows::Forms::ListBox^  listBox2;
-		private: System::Windows::Forms::Label^  lb_qtd_mapa;
-		private: System::Windows::Forms::ListBox^  listBox4;
-		private: System::Windows::Forms::ListBox^  listBox6;
-		private: System::Windows::Forms::ListBox^  listBox5;
-		private: System::Windows::Forms::ListBox^  listBox7;
-		private: System::Windows::Forms::ListBox^  listBox8;
-		private: System::Windows::Forms::Timer^  timer1;
-		private: System::ComponentModel::IContainer^  components;
+	private: String ^ diretorio;
+	private: int aux_timer = 1;
+	private: int qtd_proc_mapa = 0;
+	private: int qtd_pag_ocu = 0;
+	private: int qtd_listBox;
+	private: int tam_mem;
+	private: int tam_pag;
+	private: List <Pagina^>^ pag_mem;
+	private: List<Processo^>^ lista_proc;
+	private: int unidade_tempo = 0;
+	private: int modo_fila;
+	private: System::Windows::Forms::Button^  button2;
+	private: System::Windows::Forms::Label^  label99;
+	private: System::Windows::Forms::Button^  button3;
+	private: System::Windows::Forms::ListBox^  listbox_log;
+	private: System::Windows::Forms::Label^  label2;
+	private: System::Windows::Forms::ListBox^  listbox_lista_proc;
+	private: System::Windows::Forms::Label^  label1;
+	private: System::Windows::Forms::Label^  label5;
+	private: System::Windows::Forms::ListBox^  listBox_fila_proc;
+	private: System::Windows::Forms::Label^  lb_qtd_lista_proc;
+	private: System::Windows::Forms::Label^  lb_qtd_log;
+	private: System::Windows::Forms::Label^  lb_qtd_fila_proc;
+	private: System::Windows::Forms::Label^  lb_unidade_tempo;
+	private: System::Windows::Forms::Label^  lb_pag_livre;
+	private: System::Windows::Forms::Label^  label8;
+	private: System::Windows::Forms::Label^  label9;
+	private: System::Windows::Forms::Label^  label10;
+	private: System::Windows::Forms::Label^  lb_tam_pag;
+	private: System::Windows::Forms::Label^  lb_tam_mem;
+	private: System::Windows::Forms::Button^  button1;
+	private: System::Windows::Forms::Panel^  panel1;
+	private: System::Windows::Forms::Label^  label3;
+	private: System::Windows::Forms::ListBox^  listBox3;
+	private: System::Windows::Forms::ListBox^  listBox1;
+	private: System::Windows::Forms::ListBox^  listBox2;
+	private: System::Windows::Forms::Label^  lb_qtd_mapa;
+	private: System::Windows::Forms::ListBox^  listBox4;
+	private: System::Windows::Forms::ListBox^  listBox6;
+	private: System::Windows::Forms::ListBox^  listBox5;
+	private: System::Windows::Forms::ListBox^  listBox7;
+	private: System::Windows::Forms::ListBox^  listBox8;
+	private: System::Windows::Forms::Timer^  timer1;
+	private: System::ComponentModel::IContainer^  components;
 
 
 
@@ -496,10 +374,7 @@ namespace SimPag {
 			// listBox3
 			// 
 			this->listBox3->FormattingEnabled = true;
-			this->listBox3->Items->AddRange(gcnew cli::array< System::Object^  >(16) {
-				L" ", L" ", L" ", L" ", L" ", L" ", L" ", L" ",
-					L" ", L" ", L" ", L" ", L" ", L" ", L" ", L" "
-			});
+			
 			this->listBox3->Location = System::Drawing::Point(408, 37);
 			this->listBox3->Name = L"listBox3";
 			this->listBox3->Size = System::Drawing::Size(52, 212);
@@ -516,10 +391,7 @@ namespace SimPag {
 			// listBox2
 			// 
 			this->listBox2->FormattingEnabled = true;
-			this->listBox2->Items->AddRange(gcnew cli::array< System::Object^  >(16) {
-				L" ", L" ", L" ", L" ", L" ", L" ", L" ", L" ",
-					L" ", L" ", L" ", L" ", L" ", L" ", L" ", L" "
-			});
+			
 			this->listBox2->Location = System::Drawing::Point(512, 37);
 			this->listBox2->Name = L"listBox2";
 			this->listBox2->Size = System::Drawing::Size(52, 212);
@@ -537,10 +409,7 @@ namespace SimPag {
 			// listBox4
 			// 
 			this->listBox4->FormattingEnabled = true;
-			this->listBox4->Items->AddRange(gcnew cli::array< System::Object^  >(16) {
-				L" ", L" ", L" ", L" ", L" ", L" ", L" ", L" ",
-					L" ", L" ", L" ", L" ", L" ", L" ", L" ", L" "
-			});
+		
 			this->listBox4->Location = System::Drawing::Point(564, 37);
 			this->listBox4->Name = L"listBox4";
 			this->listBox4->Size = System::Drawing::Size(52, 212);
@@ -549,10 +418,7 @@ namespace SimPag {
 			// listBox6
 			// 
 			this->listBox6->FormattingEnabled = true;
-			this->listBox6->Items->AddRange(gcnew cli::array< System::Object^  >(16) {
-				L" ", L" ", L" ", L" ", L" ", L" ", L" ", L" ",
-					L" ", L" ", L" ", L" ", L" ", L" ", L" ", L" "
-			});
+			
 			this->listBox6->Location = System::Drawing::Point(616, 37);
 			this->listBox6->Name = L"listBox6";
 			this->listBox6->Size = System::Drawing::Size(52, 212);
@@ -561,10 +427,7 @@ namespace SimPag {
 			// listBox5
 			// 
 			this->listBox5->FormattingEnabled = true;
-			this->listBox5->Items->AddRange(gcnew cli::array< System::Object^  >(16) {
-				L" ", L" ", L" ", L" ", L" ", L" ", L" ", L" ",
-					L" ", L" ", L" ", L" ", L" ", L" ", L" ", L" "
-			});
+			
 			this->listBox5->Location = System::Drawing::Point(356, 37);
 			this->listBox5->Name = L"listBox5";
 			this->listBox5->Size = System::Drawing::Size(52, 212);
@@ -573,10 +436,6 @@ namespace SimPag {
 			// listBox7
 			// 
 			this->listBox7->FormattingEnabled = true;
-			this->listBox7->Items->AddRange(gcnew cli::array< System::Object^  >(16) {
-				L" ", L" ", L" ", L" ", L" ", L" ", L" ", L" ",
-					L" ", L" ", L" ", L" ", L" ", L" ", L" ", L" "
-			});
 			this->listBox7->Location = System::Drawing::Point(301, 37);
 			this->listBox7->Name = L"listBox7";
 			this->listBox7->Size = System::Drawing::Size(55, 212);
@@ -585,10 +444,7 @@ namespace SimPag {
 			// listBox8
 			// 
 			this->listBox8->FormattingEnabled = true;
-			this->listBox8->Items->AddRange(gcnew cli::array< System::Object^  >(16) {
-				L" ", L" ", L" ", L" ", L" ", L" ", L" ", L" ",
-					L" ", L" ", L" ", L" ", L" ", L" ", L" ", L" "
-			});
+		
 			this->listBox8->Location = System::Drawing::Point(668, 37);
 			this->listBox8->Name = L"listBox8";
 			this->listBox8->Size = System::Drawing::Size(52, 212);
@@ -638,16 +494,176 @@ namespace SimPag {
 
 		}
 #pragma endregion
+
+		public: void InitializaVariaveis(String^ diretorio, String^ pag, String^ mem, int ordem_fila) {
+			// Inicializa listas e afins
+			this->modo_fila = ordem_fila;
+			try {
+				StreamReader^ arq = gcnew StreamReader(diretorio);
+				try {
+					String^ line;
+					line = arq->ReadLine();
+					string aux;
+					vector <string> linha;
+					lista_proc = gcnew List<Processo^>();
+
+					while (line = arq->ReadLine())
+					{
+						listbox_lista_proc->Items->Add(line);
+						aux = msclr::interop::marshal_as< std::string >(line);
+						linha = explode(aux, ',');
+						Processo^ processo = gcnew Processo();
+						processo->ID = msclr::interop::marshal_as< System::String^ >(linha[0]);
+						processo->tempo_cria = std::stoi(linha[1]);
+						processo->tempo_remove = std::stoi(linha[2]) - processo->tempo_cria - 1;
+						processo->tam = std::stoi(linha[3]);
+						lista_proc->Add(processo);
+					}
+
+					lb_qtd_lista_proc->Text = listbox_lista_proc->Items->Count.ToString();
+					arq->Close();
+				}
+				finally
+				{
+					if (arq)
+					delete (IDisposable^)arq;
+				}
+
+			}
+			catch (Exception^ e)
+			{
+				// Let the user know what went wrong.
+				MessageBox::Show("Erro ao abrir o arquivo " + diretorio + "\n" + e->Message);
+
+			}
+
+
+
+
+			tam_mem = System::Convert::ToInt32(mem);
+			tam_pag = System::Convert::ToInt32(pag);
+			double paginas = tam_mem / tam_pag;			// numero de páginas na memoria fisica
+
+			Pagina ^bloco_mem;
+			pag_mem = gcnew List<Pagina^>();
+			int colun = arredondamento(paginas / 16.0);	// qtd de colunas
+			qtd_listBox = colun;
+			if (paginas == 4) {
+				this->listBox1->Items->AddRange(gcnew cli::array< System::Object^  >(4) {
+					L" ", L" ", L" ", L" "
+				});
+				for (int j = 0; j < 4; j++) {
+					bloco_mem = gcnew Pagina();
+					bloco_mem->ocupado = false;
+					pag_mem->Add(bloco_mem);
+				}
+			}
+			else if (paginas == 8) {
+				this->listBox1->Items->AddRange(gcnew cli::array< System::Object^  >(8) {
+					L" ", L" ", L" ", L" ", L" ", L" ", L" ", L" "
+				});
+				for (int j = 0; j < 8; j++) {
+					bloco_mem = gcnew Pagina();
+					bloco_mem->ocupado = false;
+					pag_mem->Add(bloco_mem);
+				}
+			}
+			else {
+				this->listBox1->Items->AddRange(gcnew cli::array< System::Object^  >(16) {
+					L" ", L" ", L" ", L" ", L" ", L" ", L" ", L" ",
+						L" ", L" ", L" ", L" ", L" ", L" ", L" ", L" "
+				});
+				for (int i = 0; i < colun; i++) {
+					for (int j = 0; j < 16; j++) {
+						bloco_mem = gcnew Pagina();
+						bloco_mem->ocupado = false;
+						pag_mem->Add(bloco_mem);
+					}
+				}
+			}
+
+			lb_unidade_tempo->Text = "0";
+			lb_tam_mem->Text = mem;
+			lb_tam_pag->Text = pag;
+			lb_pag_livre->Text = paginas.ToString();
+			lb_qtd_log->Text = "0";
+			lb_qtd_mapa->Text = "0";
+			lb_qtd_fila_proc->Text = "0";
+
+			this->listBox2->Items->AddRange(gcnew cli::array< System::Object^  >(16) {
+				L" ", L" ", L" ", L" ", L" ", L" ", L" ", L" ",
+					L" ", L" ", L" ", L" ", L" ", L" ", L" ", L" "
+			});
+			this->listBox3->Items->AddRange(gcnew cli::array< System::Object^  >(16) {
+				L" ", L" ", L" ", L" ", L" ", L" ", L" ", L" ",
+					L" ", L" ", L" ", L" ", L" ", L" ", L" ", L" "
+			});
+			this->listBox4->Items->AddRange(gcnew cli::array< System::Object^  >(16) {
+				L" ", L" ", L" ", L" ", L" ", L" ", L" ", L" ",
+					L" ", L" ", L" ", L" ", L" ", L" ", L" ", L" "
+			});
+			this->listBox5->Items->AddRange(gcnew cli::array< System::Object^  >(16) {
+				L" ", L" ", L" ", L" ", L" ", L" ", L" ", L" ",
+					L" ", L" ", L" ", L" ", L" ", L" ", L" ", L" "
+			});
+			this->listBox6->Items->AddRange(gcnew cli::array< System::Object^  >(16) {
+				L" ", L" ", L" ", L" ", L" ", L" ", L" ", L" ",
+					L" ", L" ", L" ", L" ", L" ", L" ", L" ", L" "
+			});
+			this->listBox7->Items->AddRange(gcnew cli::array< System::Object^  >(16) {
+				L" ", L" ", L" ", L" ", L" ", L" ", L" ", L" ",
+					L" ", L" ", L" ", L" ", L" ", L" ", L" ", L" "
+			});
+			this->listBox8->Items->AddRange(gcnew cli::array< System::Object^  >(16) {
+				L" ", L" ", L" ", L" ", L" ", L" ", L" ", L" ",
+					L" ", L" ", L" ", L" ", L" ", L" ", L" ", L" "
+			});
+			
+
+
+			switch (colun)
+			{
+			case 1:
+				listBox2->Visible = false;
+				listBox3->Visible = false;
+				listBox4->Visible = false;
+				listBox5->Visible = false;
+				listBox6->Visible = false;
+				listBox7->Visible = false;
+				listBox8->Visible = false;
+				break;
+			case 2:
+				listBox3->Visible = false;
+				listBox4->Visible = false;
+				listBox5->Visible = false;
+				listBox6->Visible = false;
+				listBox7->Visible = false;
+				listBox8->Visible = false;
+				break;
+			case 4:
+				listBox5->Visible = false;
+				listBox6->Visible = false;
+				listBox7->Visible = false;
+				listBox8->Visible = false;
+				break;
+
+			default:
+				break;
+			}
+
+
+
+		}
 	public: vector<int> verifica_listbox(ListBox ^listbox) {
 		vector <int> pos;
 		int aux;
-		while((aux = listbox->FindString(" ")) != -1) {
+		while ((aux = listbox->FindString(" ")) != -1) {
 			pos.push_back(aux);
 		}
 		return pos;
 	}
 	public: void insere_mapa(Processo^ processo) {
-		
+
 		int qtd_paginas = arredondamento(processo->tam / tam_pag);
 		int tamanho_processo = processo->tam;
 		int aux = 0, aux2 = 0, pos;
@@ -671,9 +687,9 @@ namespace SimPag {
 					qtd_pag_ocu++;
 					break;
 				}
-				
+
 			}
-			
+
 
 			switch (qtd_listBox)
 			{
@@ -681,7 +697,7 @@ namespace SimPag {
 				pos = listBox7->FindString(" ");
 				if (pos != -1) {
 					listBox7->Items->RemoveAt(pos);
-					listBox7->Items->Insert(pos, "P " + processo->ID + " - " + pag_mem[aux]->processo->tam.ToString() );
+					listBox7->Items->Insert(pos, "P " + processo->ID + " - " + pag_mem[aux]->processo->tam.ToString());
 					pag_mem[aux]->listbox = 7;
 					break;
 				}
@@ -724,7 +740,7 @@ namespace SimPag {
 					pag_mem[aux]->listbox = 4;
 					break;
 				}
-				
+
 				pos = listBox6->FindString(" ");
 				if (pos != -1) {
 					listBox6->Items->RemoveAt(pos);
@@ -800,8 +816,8 @@ namespace SimPag {
 			}
 
 		}
-		
-		
+
+
 	}
 
 	public: void limpa_mem(Pagina ^pagina) {
@@ -921,8 +937,8 @@ namespace SimPag {
 		aux_timer = 0;
 		Processo ^processo;
 		unidade_tempo++;
-		lb_unidade_tempo->Text = Convert::ToString(unidade_tempo); 
-		if (lista_proc->Count != 0 || qtd_pag_ocu != 0) {			
+		lb_unidade_tempo->Text = Convert::ToString(unidade_tempo);
+		if (lista_proc->Count != 0 || qtd_pag_ocu != 0) {
 			for (int i = 0; i < pag_mem->Count; i++) {
 				if (pag_mem[i]->ocupado == true) {
 					if (pag_mem[i]->processo->tempo_remove == 0) {
@@ -935,7 +951,7 @@ namespace SimPag {
 						pag_mem[i]->processo->tempo_remove--;
 					}
 				}
-			}			
+			}
 			if (!(lista_proc->Count == 0)) {
 				int aux = 0;
 				Processo ^processo;
@@ -945,7 +961,6 @@ namespace SimPag {
 						&& lista_proc[0]->tempo_cria <= unidade_tempo) {
 						processo = lista_proc[0];
 						lista_proc->RemoveAt(0);
-						listBox_fila_proc->Items->Add(listbox_lista_proc->Items[0]);
 						listbox_lista_proc->Items->RemoveAt(0);
 						insere_mapa(processo);
 						qtd_proc_mapa++;
@@ -984,7 +999,7 @@ namespace SimPag {
 					}
 				}
 			}
-			
+
 			for (int i = 0; i < pag_mem->Count; i++) {
 				if (pag_mem[i]->ocupado == true) {
 					if (pag_mem[i]->processo->tempo_remove == -1) {
@@ -995,14 +1010,14 @@ namespace SimPag {
 				}
 			}
 			lb_pag_livre->Text = (pag_mem->Count - qtd_pag_ocu).ToString();
-			
+
 			aux_timer = 1;
 		}
 		else
 		{
 			timer1->Enabled = false;
 			MessageBox::Show("Simulação encerrada.");
-			this->Close();
+			button1->Enabled = false;
 		}
 	}
 	private: int arredondamento(double numero)
@@ -1031,28 +1046,47 @@ namespace SimPag {
 
 
 	private: System::Void timer1_Tick(System::Object^  sender, System::EventArgs^  e) {
-		if(aux_timer == 1)
+		if (aux_timer == 1)
 			simulacao();
 	}
-private: System::Void button2_Click_1(System::Object^  sender, System::EventArgs^  e) {
-	if (button2->Text == "Iniciar") {
-		button2->Text = "Resumir";
-		timer1->Enabled = true;
+	private: System::Void button2_Click_1(System::Object^  sender, System::EventArgs^  e) {
+		if (button2->Text == "Iniciar") {
+			button2->Text = "Resumir";
+			button3->Enabled = false;
+			timer1->Enabled = true;
+
+		}
+		else {
+			button2->Text = "Iniciar";
+			button3->Enabled = true;
+			timer1->Enabled = false;
+		}
 	}
-	else {
-		button2->Text = "Iniciar";
+	private: System::Void button3_Click(System::Object^  sender, System::EventArgs^  e) {
 		timer1->Enabled = false;
+		pag_mem->Clear();
+		lista_proc->Clear();
+		listbox_lista_proc->Items->Clear();
+		listBox1->Items->Clear();
+		listBox2->Items->Clear();
+		listBox3->Items->Clear();
+		listBox4->Items->Clear();
+		listBox5->Items->Clear();
+		listBox6->Items->Clear();
+		listBox7->Items->Clear();
+		listBox8->Items->Clear();
+		aux_timer = 1;
+		qtd_proc_mapa = 0;
+		qtd_pag_ocu = 0;
+		unidade_tempo = 0;
+		qtd_listBox = 0;
+		this->InitializaVariaveis(diretorio, tam_pag.ToString(), tam_mem.ToString(), modo_fila);
 	}
-}
-private: System::Void button3_Click(System::Object^  sender, System::EventArgs^  e) {
-	timer1->Enabled = false;
-	this->InitializeComponent();
-}
-private: System::Void button1_Click(System::Object^  sender, System::EventArgs^  e) {
-	timer1->Enabled = false;
-	this->Close();
-}
-private: System::Void TelaSim_Load(System::Object^  sender, System::EventArgs^  e) {
-}
-};
+	private: System::Void button1_Click(System::Object^  sender, System::EventArgs^  e) {
+		timer1->Enabled = false;
+		this->Close();
+	}
+	private: System::Void TelaSim_Load(System::Object^  sender, System::EventArgs^  e) {
+	}
+	};
 }

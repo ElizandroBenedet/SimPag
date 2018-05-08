@@ -1,0 +1,44 @@
+  SimPag.MyForm.resources - Embedded, ContainedInManifestFile, 
+  SimPag.TelaSim.resources - Embedded, ContainedInManifestFile, 
+ImageRuntimeVersion: v4.0.30319
+Assembly SimPag, Version=0.0.*, Culture=Idioma Invariável (País Invariável): 
+	hash=SHA1, flags=PublicKey
+Assembly mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089: 
+	hash=None, flags=None
+Assembly System.Data, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089: 
+	hash=None, flags=None
+Assembly System, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089: 
+	hash=None, flags=None
+Assembly System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a: 
+	hash=None, flags=None
+Assembly System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089: 
+	hash=None, flags=None
+Assembly System.Xml, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089: 
+	hash=None, flags=None
+Class SimPag.TelaSim: AutoLayout, AnsiClass, Class, Public, BeforeFieldInit
+  :System.Windows.Forms.Form
+    Void .ctor(System.String, System.String, System.String, Int32): PrivateScope, Public, HideBySig, SpecialName, RTSpecialName
+    Void .ctor(): PrivateScope, Public, HideBySig, SpecialName, RTSpecialName
+  Methods:
+    verifica_listbox(vector<int\,std::allocator<int> >*, ListBox): PrivateScope, Public, HideBySig
+    insere_mapa(Processo): PrivateScope, Public, HideBySig
+    limpa_mem(Pagina): PrivateScope, Public, HideBySig
+    verifica_tamanho(Processo): PrivateScope, Public, HideBySig
+    simulacao(): PrivateScope, Public, HideBySig
+Class SimPag.TelaSim+Processo: AutoLayout, AnsiClass, Class, NestedPublic, BeforeFieldInit
+    Void .ctor(): PrivateScope, Public, HideBySig, SpecialName, RTSpecialName
+  Fields:
+    System.String ID : Public
+    Int32 tempo_cria : Public
+    Int32 tempo_remove : Public
+    Double tam : Public
+    Int32 tempo_na_fila : Public
+Class SimPag.TelaSim+Pagina: AutoLayout, AnsiClass, Class, NestedPublic, BeforeFieldInit
+    Void .ctor(): PrivateScope, Public, HideBySig, SpecialName, RTSpecialName
+  Fields:
+    Boolean ocupado : Public
+    Processo processo : Public
+    Int32 listbox : Public
+Class SimPag.MyForm: AutoLayout, AnsiClass, Class, Public, BeforeFieldInit
+  :System.Windows.Forms.Form
+    Void .ctor(): PrivateScope, Public, HideBySig, SpecialName, RTSpecialName

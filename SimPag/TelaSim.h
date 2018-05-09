@@ -6,6 +6,7 @@
 #include <vector>
 #include <list>
 #include <chrono>
+#include <math.h>
 
 namespace SimPag {
 
@@ -114,6 +115,7 @@ namespace SimPag {
 	private: System::Windows::Forms::ListBox^  listBox8;
 	private: System::Windows::Forms::Timer^  timer1;
 	private: System::Windows::Forms::NumericUpDown^  numericUpDown1;
+	private: System::Windows::Forms::Label^  label4;
 	private: System::ComponentModel::IContainer^  components;
 
 
@@ -168,6 +170,7 @@ namespace SimPag {
 			this->listBox8 = (gcnew System::Windows::Forms::ListBox());
 			this->timer1 = (gcnew System::Windows::Forms::Timer(this->components));
 			this->numericUpDown1 = (gcnew System::Windows::Forms::NumericUpDown());
+			this->label4 = (gcnew System::Windows::Forms::Label());
 			this->panel1->SuspendLayout();
 			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->numericUpDown1))->BeginInit();
 			this->SuspendLayout();
@@ -452,17 +455,28 @@ namespace SimPag {
 			// 
 			// timer1
 			// 
-			this->timer1->Interval = 5000;
+			this->timer1->Interval = 2000;
 			this->timer1->Tick += gcnew System::EventHandler(this, &TelaSim::timer1_Tick);
 			// 
 			// numericUpDown1
 			// 
-			this->numericUpDown1->Location = System::Drawing::Point(496, 337);
+			this->numericUpDown1->Location = System::Drawing::Point(668, 443);
+			this->numericUpDown1->Maximum = System::Decimal(gcnew cli::array< System::Int32 >(4) { 10, 0, 0, 0 });
 			this->numericUpDown1->Minimum = System::Decimal(gcnew cli::array< System::Int32 >(4) { 1, 0, 0, 0 });
 			this->numericUpDown1->Name = L"numericUpDown1";
-			this->numericUpDown1->Size = System::Drawing::Size(120, 20);
+			this->numericUpDown1->ReadOnly = true;
+			this->numericUpDown1->Size = System::Drawing::Size(52, 20);
 			this->numericUpDown1->TabIndex = 34;
 			this->numericUpDown1->Value = System::Decimal(gcnew cli::array< System::Int32 >(4) { 1, 0, 0, 0 });
+			// 
+			// label4
+			// 
+			this->label4->AutoSize = true;
+			this->label4->Location = System::Drawing::Point(534, 445);
+			this->label4->Name = L"label4";
+			this->label4->Size = System::Drawing::Size(128, 13);
+			this->label4->TabIndex = 29;
+			this->label4->Text = L"Velocidade da simulação:";
 			// 
 			// TelaSim
 			// 
@@ -470,6 +484,7 @@ namespace SimPag {
 			this->AutoScaleMode = System::Windows::Forms::AutoScaleMode::Font;
 			this->BackColor = System::Drawing::SystemColors::Control;
 			this->ClientSize = System::Drawing::Size(742, 478);
+			this->Controls->Add(this->label4);
 			this->Controls->Add(this->numericUpDown1);
 			this->Controls->Add(this->listBox8);
 			this->Controls->Add(this->listBox7);
@@ -494,9 +509,12 @@ namespace SimPag {
 			this->Controls->Add(this->listbox_log);
 			this->Controls->Add(this->button3);
 			this->Controls->Add(this->button2);
+			this->MaximizeBox = false;
+			this->MaximumSize = System::Drawing::Size(758, 516);
+			this->MinimumSize = System::Drawing::Size(758, 516);
 			this->Name = L"TelaSim";
+			this->StartPosition = System::Windows::Forms::FormStartPosition::CenterScreen;
 			this->Text = L"TelaSim";
-			this->Load += gcnew System::EventHandler(this, &TelaSim::TelaSim_Load);
 			this->panel1->ResumeLayout(false);
 			this->panel1->PerformLayout();
 			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->numericUpDown1))->EndInit();
@@ -912,8 +930,8 @@ namespace SimPag {
 	}
 
 	public: bool verifica_tamanho(Processo^ processo) {
-		int tam_processo = processo->tam;
-		int paginas = arredondamento(tam_processo / tam_pag);
+		double tam_processo = System::Convert::ToDouble(processo->tam);
+		int paginas = arredondamento(tam_processo / System::Convert::ToDouble(tam_pag));
 		if ((pag_mem->Count - qtd_pag_ocu) >= paginas) {
 			return true;
 		}
@@ -951,6 +969,7 @@ namespace SimPag {
 						&& lista_proc[0]->tempo_cria <= unidade_tempo) {
 						processo = lista_proc[0];
 						lista_proc->RemoveAt(0);
+						listBox_fila_proc->Items->Add(listbox_lista_proc->Items[0]->ToString());
 						listbox_lista_proc->Items->RemoveAt(0);
 						insere_mapa(processo);
 						qtd_proc_mapa++;
@@ -963,6 +982,7 @@ namespace SimPag {
 							if (verifica_tamanho(lista_proc[i])) {
 								processo = lista_proc[i];
 								lista_proc->RemoveAt(i);
+								listBox_fila_proc->Items->Add(listbox_lista_proc->Items[i]->ToString());
 								listbox_lista_proc->Items->RemoveAt(i);
 								insere_mapa(processo);
 								i--;
@@ -1015,7 +1035,7 @@ namespace SimPag {
 		double fracao, inteiro;
 		fracao = modf(numero, &inteiro);
 		if (fracao> 0.0) return inteiro + 1;
-		else return inteiro;
+		else return System::Convert::ToInt32(inteiro);
 	}
 
 	private:  vector<string> explode(string s, char c)
@@ -1078,7 +1098,5 @@ namespace SimPag {
 		timer1->Enabled = false;
 		this->Close();
 	}
-	private: System::Void TelaSim_Load(System::Object^  sender, System::EventArgs^  e) {
-	}
-	};
+};
 }

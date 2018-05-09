@@ -1,15 +1,5 @@
-﻿  MyForm.cpp
-c:\users\chewbie\desktop\simpag\simpag\telasim.h(681): warning C4244: 'inicializando': conversão de 'double' para 'int', possível perda de dados
-c:\users\chewbie\desktop\simpag\simpag\telasim.h(916): warning C4244: 'inicializando': conversão de 'double' para 'int', possível perda de dados
-c:\users\chewbie\desktop\simpag\simpag\telasim.h(929): warning C4101: 'processo': variável local não referenciada
-c:\users\chewbie\desktop\simpag\simpag\telasim.h(1018): warning C4244: 'return': conversão de 'double' para 'int', possível perda de dados
-c:\users\chewbie\desktop\simpag\simpag\telasim.h(1019): warning C4244: 'return': conversão de 'double' para 'int', possível perda de dados
-c:\users\chewbie\desktop\simpag\simpag\myform.cpp(5): warning C4829: Parâmetros possivelmente incorretos para função main. Considere o uso de 'int main(Platform::Array<Platform::String^>^ argv)'
-  TelaSim.cpp
-c:\users\chewbie\desktop\simpag\simpag\telasim.h(681): warning C4244: 'inicializando': conversão de 'double' para 'int', possível perda de dados
-c:\users\chewbie\desktop\simpag\simpag\telasim.h(916): warning C4244: 'inicializando': conversão de 'double' para 'int', possível perda de dados
-c:\users\chewbie\desktop\simpag\simpag\telasim.h(929): warning C4101: 'processo': variável local não referenciada
-c:\users\chewbie\desktop\simpag\simpag\telasim.h(1018): warning C4244: 'return': conversão de 'double' para 'int', possível perda de dados
-c:\users\chewbie\desktop\simpag\simpag\telasim.h(1019): warning C4244: 'return': conversão de 'double' para 'int', possível perda de dados
-  Gerando Código...
+﻿  TelaSim.cpp
+c:\users\chewbie\desktop\simpag\simpag\telasim.h(698): warning C4244: 'inicializando': conversão de 'double' para 'int', possível perda de dados
+c:\users\chewbie\desktop\simpag\simpag\telasim.h(946): warning C4101: 'processo': variável local não referenciada
+c:\users\chewbie\desktop\simpag\simpag\telasim.h(1037): warning C4244: 'return': conversão de 'double' para 'int', possível perda de dados
   SimPag.vcxproj -> C:\Users\Chewbie\Desktop\SimPag\Debug\SimPag.exe

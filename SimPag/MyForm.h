@@ -198,7 +198,10 @@ namespace SimPag {
 			// radioButton1
 			// 
 			this->radioButton1->AutoSize = true;
+			this->radioButton1->Checked = true;
 			this->radioButton1->Location = System::Drawing::Point(18, 31);
+			this->radioButton1->MaximumSize = System::Drawing::Size(48, 17);
+			this->radioButton1->MinimumSize = System::Drawing::Size(48, 17);
 			this->radioButton1->Name = L"radioButton1";
 			this->radioButton1->Size = System::Drawing::Size(48, 17);
 			this->radioButton1->TabIndex = 10;
@@ -213,7 +216,6 @@ namespace SimPag {
 			this->radioButton2->Name = L"radioButton2";
 			this->radioButton2->Size = System::Drawing::Size(75, 17);
 			this->radioButton2->TabIndex = 11;
-			this->radioButton2->TabStop = true;
 			this->radioButton2->Text = L"FIRST FIT";
 			this->radioButton2->UseVisualStyleBackColor = true;
 			// 
@@ -254,6 +256,9 @@ namespace SimPag {
 			this->Controls->Add(this->label1);
 			this->Controls->Add(this->comboBox1);
 			this->FormBorderStyle = System::Windows::Forms::FormBorderStyle::FixedSingle;
+			this->MaximizeBox = false;
+			this->MaximumSize = System::Drawing::Size(311, 300);
+			this->MinimumSize = System::Drawing::Size(311, 300);
 			this->Name = L"MyForm";
 			this->StartPosition = System::Windows::Forms::FormStartPosition::CenterScreen;
 			this->Text = L"SimPag";
@@ -316,7 +321,8 @@ namespace SimPag {
 				tela = gcnew TelaSim(textBox1->Text, comboBox1->SelectedItem->ToString(), comboBox2->SelectedItem->ToString(), 0);
 			}
 			Hide();
-			tela->Show();
+			tela->ShowDialog();
+			Show();
 		}
 	}
 	};

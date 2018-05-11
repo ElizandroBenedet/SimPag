@@ -7,6 +7,7 @@
 #include <list>
 #include <chrono>
 #include <math.h>
+#include "telaResultado.h"
 
 namespace SimPag {
 
@@ -71,9 +72,10 @@ namespace SimPag {
 				delete components;
 			}
 		}
+	private: int maximo_proc = 0;
+	private: List<Processo ^>^ lista_proce_mapa;
 	private: String ^ diretorio;
 	private: int aux_timer = 1;
-	private: int qtd_proc_mapa = 0;
 	private: int qtd_pag_ocu = 0;
 	private: int qtd_listBox;
 	private: int tam_mem;
@@ -89,11 +91,11 @@ namespace SimPag {
 	private: System::Windows::Forms::Label^  label2;
 	private: System::Windows::Forms::ListBox^  listbox_lista_proc;
 	private: System::Windows::Forms::Label^  label1;
-	private: System::Windows::Forms::Label^  label5;
-	private: System::Windows::Forms::ListBox^  listBox_fila_proc;
+
+
 	private: System::Windows::Forms::Label^  lb_qtd_lista_proc;
 	private: System::Windows::Forms::Label^  lb_qtd_log;
-	private: System::Windows::Forms::Label^  lb_qtd_fila_proc;
+
 	private: System::Windows::Forms::Label^  lb_unidade_tempo;
 	private: System::Windows::Forms::Label^  lb_pag_livre;
 	private: System::Windows::Forms::Label^  label8;
@@ -144,11 +146,8 @@ namespace SimPag {
 			this->label2 = (gcnew System::Windows::Forms::Label());
 			this->listbox_lista_proc = (gcnew System::Windows::Forms::ListBox());
 			this->label1 = (gcnew System::Windows::Forms::Label());
-			this->label5 = (gcnew System::Windows::Forms::Label());
-			this->listBox_fila_proc = (gcnew System::Windows::Forms::ListBox());
 			this->lb_qtd_lista_proc = (gcnew System::Windows::Forms::Label());
 			this->lb_qtd_log = (gcnew System::Windows::Forms::Label());
-			this->lb_qtd_fila_proc = (gcnew System::Windows::Forms::Label());
 			this->lb_unidade_tempo = (gcnew System::Windows::Forms::Label());
 			this->lb_pag_livre = (gcnew System::Windows::Forms::Label());
 			this->label8 = (gcnew System::Windows::Forms::Label());
@@ -188,7 +187,7 @@ namespace SimPag {
 			// label99
 			// 
 			this->label99->AutoSize = true;
-			this->label99->Location = System::Drawing::Point(8, 71);
+			this->label99->Location = System::Drawing::Point(8, 104);
 			this->label99->Name = L"label99";
 			this->label99->Size = System::Drawing::Size(97, 13);
 			this->label99->TabIndex = 5;
@@ -207,15 +206,15 @@ namespace SimPag {
 			// listbox_log
 			// 
 			this->listbox_log->FormattingEnabled = true;
-			this->listbox_log->Location = System::Drawing::Point(187, 37);
+			this->listbox_log->Location = System::Drawing::Point(157, 37);
 			this->listbox_log->Name = L"listbox_log";
-			this->listbox_log->Size = System::Drawing::Size(94, 212);
+			this->listbox_log->Size = System::Drawing::Size(124, 212);
 			this->listbox_log->TabIndex = 6;
 			// 
 			// label2
 			// 
 			this->label2->AutoSize = true;
-			this->label2->Location = System::Drawing::Point(200, 21);
+			this->label2->Location = System::Drawing::Point(183, 21);
 			this->label2->Name = L"label2";
 			this->label2->Size = System::Drawing::Size(70, 13);
 			this->label2->TabIndex = 1;
@@ -226,39 +225,22 @@ namespace SimPag {
 			this->listbox_lista_proc->FormattingEnabled = true;
 			this->listbox_lista_proc->Location = System::Drawing::Point(19, 37);
 			this->listbox_lista_proc->Name = L"listbox_lista_proc";
-			this->listbox_lista_proc->Size = System::Drawing::Size(92, 212);
+			this->listbox_lista_proc->Size = System::Drawing::Size(116, 212);
 			this->listbox_lista_proc->TabIndex = 13;
 			// 
 			// label1
 			// 
 			this->label1->AutoSize = true;
-			this->label1->Location = System::Drawing::Point(13, 21);
+			this->label1->Location = System::Drawing::Point(30, 21);
 			this->label1->Name = L"label1";
 			this->label1->Size = System::Drawing::Size(95, 13);
 			this->label1->TabIndex = 14;
 			this->label1->Text = L"Lista de processos";
 			// 
-			// label5
-			// 
-			this->label5->AutoSize = true;
-			this->label5->Location = System::Drawing::Point(105, 21);
-			this->label5->Name = L"label5";
-			this->label5->Size = System::Drawing::Size(89, 13);
-			this->label5->TabIndex = 16;
-			this->label5->Text = L"Fila de processos";
-			// 
-			// listBox_fila_proc
-			// 
-			this->listBox_fila_proc->FormattingEnabled = true;
-			this->listBox_fila_proc->Location = System::Drawing::Point(117, 37);
-			this->listBox_fila_proc->Name = L"listBox_fila_proc";
-			this->listBox_fila_proc->Size = System::Drawing::Size(64, 212);
-			this->listBox_fila_proc->TabIndex = 17;
-			// 
 			// lb_qtd_lista_proc
 			// 
 			this->lb_qtd_lista_proc->AutoSize = true;
-			this->lb_qtd_lista_proc->Location = System::Drawing::Point(58, 252);
+			this->lb_qtd_lista_proc->Location = System::Drawing::Point(66, 252);
 			this->lb_qtd_lista_proc->Name = L"lb_qtd_lista_proc";
 			this->lb_qtd_lista_proc->Size = System::Drawing::Size(19, 13);
 			this->lb_qtd_lista_proc->TabIndex = 18;
@@ -267,25 +249,16 @@ namespace SimPag {
 			// lb_qtd_log
 			// 
 			this->lb_qtd_log->AutoSize = true;
-			this->lb_qtd_log->Location = System::Drawing::Point(225, 252);
+			this->lb_qtd_log->Location = System::Drawing::Point(209, 252);
 			this->lb_qtd_log->Name = L"lb_qtd_log";
 			this->lb_qtd_log->Size = System::Drawing::Size(19, 13);
 			this->lb_qtd_log->TabIndex = 19;
 			this->lb_qtd_log->Text = L"23";
 			// 
-			// lb_qtd_fila_proc
-			// 
-			this->lb_qtd_fila_proc->AutoSize = true;
-			this->lb_qtd_fila_proc->Location = System::Drawing::Point(140, 252);
-			this->lb_qtd_fila_proc->Name = L"lb_qtd_fila_proc";
-			this->lb_qtd_fila_proc->Size = System::Drawing::Size(19, 13);
-			this->lb_qtd_fila_proc->TabIndex = 21;
-			this->lb_qtd_fila_proc->Text = L"23";
-			// 
 			// lb_unidade_tempo
 			// 
 			this->lb_unidade_tempo->AutoSize = true;
-			this->lb_unidade_tempo->Location = System::Drawing::Point(180, 71);
+			this->lb_unidade_tempo->Location = System::Drawing::Point(180, 104);
 			this->lb_unidade_tempo->Name = L"lb_unidade_tempo";
 			this->lb_unidade_tempo->Size = System::Drawing::Size(19, 13);
 			this->lb_unidade_tempo->TabIndex = 22;
@@ -294,7 +267,7 @@ namespace SimPag {
 			// lb_pag_livre
 			// 
 			this->lb_pag_livre->AutoSize = true;
-			this->lb_pag_livre->Location = System::Drawing::Point(180, 100);
+			this->lb_pag_livre->Location = System::Drawing::Point(180, 73);
 			this->lb_pag_livre->Name = L"lb_pag_livre";
 			this->lb_pag_livre->Size = System::Drawing::Size(19, 13);
 			this->lb_pag_livre->TabIndex = 24;
@@ -303,7 +276,7 @@ namespace SimPag {
 			// label8
 			// 
 			this->label8->AutoSize = true;
-			this->label8->Location = System::Drawing::Point(8, 100);
+			this->label8->Location = System::Drawing::Point(8, 73);
 			this->label8->Name = L"label8";
 			this->label8->Size = System::Drawing::Size(145, 13);
 			this->label8->TabIndex = 23;
@@ -374,7 +347,7 @@ namespace SimPag {
 			// label3
 			// 
 			this->label3->AutoSize = true;
-			this->label3->Location = System::Drawing::Point(454, 21);
+			this->label3->Location = System::Drawing::Point(453, 21);
 			this->label3->Name = L"label3";
 			this->label3->Size = System::Drawing::Size(120, 13);
 			this->label3->TabIndex = 2;
@@ -407,10 +380,11 @@ namespace SimPag {
 			// lb_qtd_mapa
 			// 
 			this->lb_qtd_mapa->AutoSize = true;
-			this->lb_qtd_mapa->Location = System::Drawing::Point(480, 252);
+			this->lb_qtd_mapa->Location = System::Drawing::Point(502, 252);
 			this->lb_qtd_mapa->Name = L"lb_qtd_mapa";
 			this->lb_qtd_mapa->Size = System::Drawing::Size(19, 13);
 			this->lb_qtd_mapa->TabIndex = 20;
+			this->lb_qtd_mapa->Tag = L"Quantidade de processos";
 			this->lb_qtd_mapa->Text = L"23";
 			// 
 			// listBox4
@@ -494,13 +468,10 @@ namespace SimPag {
 			this->Controls->Add(this->listBox6);
 			this->Controls->Add(this->lb_qtd_log);
 			this->Controls->Add(this->listBox4);
-			this->Controls->Add(this->lb_qtd_fila_proc);
 			this->Controls->Add(this->lb_qtd_mapa);
 			this->Controls->Add(this->lb_qtd_lista_proc);
 			this->Controls->Add(this->listBox2);
-			this->Controls->Add(this->listBox_fila_proc);
 			this->Controls->Add(this->listBox1);
-			this->Controls->Add(this->label5);
 			this->Controls->Add(this->listBox3);
 			this->Controls->Add(this->label1);
 			this->Controls->Add(this->label3);
@@ -539,9 +510,11 @@ namespace SimPag {
 
 					while (line = arq->ReadLine())
 					{
-						listbox_lista_proc->Items->Add(line);
+						
 						aux = msclr::interop::marshal_as< std::string >(line);
 						linha = explode(aux, ',');
+						String ^linha1 = msclr::interop::marshal_as< System::String^ >(" " + linha[0] + " - " + linha[1] + " - " + linha[2] + " - " + linha[3]);
+						listbox_lista_proc->Items->Add(linha1);
 						Processo^ processo = gcnew Processo();
 						processo->ID = msclr::interop::marshal_as< System::String^ >(linha[0]);
 						processo->tempo_cria = std::stoi(linha[1]);
@@ -612,13 +585,14 @@ namespace SimPag {
 				}
 			}
 
+			lista_proce_mapa = gcnew List<Processo^>();
+
 			lb_unidade_tempo->Text = "0";
 			lb_tam_mem->Text = mem;
 			lb_tam_pag->Text = pag;
 			lb_pag_livre->Text = paginas.ToString();
 			lb_qtd_log->Text = "0";
 			lb_qtd_mapa->Text = "0";
-			lb_qtd_fila_proc->Text = "0";
 
 			this->listBox2->Items->AddRange(gcnew cli::array< System::Object^  >(16) {
 				L" ", L" ", L" ", L" ", L" ", L" ", L" ", L" ",
@@ -654,6 +628,10 @@ namespace SimPag {
 			switch (colun)
 			{
 			case 1:
+				this->lb_qtd_mapa->Location = System::Drawing::Point(479, 252);
+				this->lb_qtd_mapa->Size = System::Drawing::Size(19, 13);	
+				this->label3->Location = System::Drawing::Point(423, 21);
+				this->label3->Size = System::Drawing::Size(120, 13);
 				listBox2->Visible = false;
 				listBox3->Visible = false;
 				listBox4->Visible = false;
@@ -960,6 +938,20 @@ namespace SimPag {
 					}
 				}
 			}
+			
+
+			for (int i = 0; i < lista_proce_mapa->Count; i++) {
+				if (lista_proce_mapa[i]->tempo_remove == 0) {
+					lista_proce_mapa->RemoveAt(i);
+					i--;
+				}
+				else {
+					lista_proce_mapa[i]->tempo_remove--;
+				}
+			}
+
+			
+
 			if (!(lista_proc->Count == 0)) {
 				int aux = 0;
 				Processo ^processo;
@@ -968,12 +960,17 @@ namespace SimPag {
 						&& verifica_tamanho(lista_proc[0])
 						&& lista_proc[0]->tempo_cria <= unidade_tempo) {
 						processo = lista_proc[0];
+						
+						Processo ^processo_aux = gcnew Processo();
+						processo_aux->ID = processo->ID;
+						processo_aux->tam = processo->tam;
+						processo_aux->tempo_cria = processo->tempo_cria;
+						processo_aux->tempo_remove = processo->tempo_remove;
+						processo_aux->tempo_na_fila = processo->tempo_na_fila;
+						lista_proce_mapa->Add(processo_aux);
 						lista_proc->RemoveAt(0);
-						listBox_fila_proc->Items->Add(listbox_lista_proc->Items[0]->ToString());
 						listbox_lista_proc->Items->RemoveAt(0);
 						insere_mapa(processo);
-						qtd_proc_mapa++;
-						lb_qtd_mapa->Text = qtd_proc_mapa.ToString();
 					}
 				}
 				else {								// se for FFit
@@ -981,8 +978,14 @@ namespace SimPag {
 						if (lista_proc[i]->tempo_cria <= unidade_tempo) {
 							if (verifica_tamanho(lista_proc[i])) {
 								processo = lista_proc[i];
+								Processo ^processo_aux = gcnew Processo();
+								processo_aux->ID = processo->ID;
+								processo_aux->tam = processo->tam;
+								processo_aux->tempo_cria = processo->tempo_cria;
+								processo_aux->tempo_remove = processo->tempo_remove;
+								processo_aux->tempo_na_fila = processo->tempo_na_fila;
+								lista_proce_mapa->Add(processo_aux);
 								lista_proc->RemoveAt(i);
-								listBox_fila_proc->Items->Add(listbox_lista_proc->Items[i]->ToString());
 								listbox_lista_proc->Items->RemoveAt(i);
 								insere_mapa(processo);
 								i--;
@@ -996,7 +999,12 @@ namespace SimPag {
 
 				}
 
-				lb_qtd_fila_proc->Text = lista_proc->Count.ToString();
+				
+				if (lista_proce_mapa->Count > maximo_proc) {
+					maximo_proc = lista_proce_mapa->Count;
+				}
+
+				lb_qtd_lista_proc->Text = lista_proc->Count.ToString();
 
 
 				// Media de tempo na fila
@@ -1010,6 +1018,8 @@ namespace SimPag {
 				}
 			}
 
+
+
 			for (int i = 0; i < pag_mem->Count; i++) {
 				if (pag_mem[i]->ocupado == true) {
 					if (pag_mem[i]->processo->tempo_remove == -1) {
@@ -1019,15 +1029,23 @@ namespace SimPag {
 					}
 				}
 			}
+			for (int i = 0; i < lista_proce_mapa->Count; i++) {
+				if (lista_proce_mapa[i]->tempo_remove == -1) {
+					lista_proce_mapa->RemoveAt(i);
+					i--;
+				}
+			}
 			lb_pag_livre->Text = (pag_mem->Count - qtd_pag_ocu).ToString();
+			lb_qtd_mapa->Text = lista_proce_mapa->Count.ToString();
 
 			aux_timer = 1;
 		}
 		else
 		{
 			timer1->Enabled = false;
+			telaResultado ^telaresultado = gcnew telaResultado();
 			MessageBox::Show("Simulação encerrada.");
-			button1->Enabled = false;
+			telaresultado->ShowDialog();
 		}
 	}
 
@@ -1056,14 +1074,14 @@ namespace SimPag {
 		}
 	}
 	private: System::Void button2_Click_1(System::Object^  sender, System::EventArgs^  e) {
-		if (button2->Text == "Iniciar") {
-			button2->Text = "Resumir";
+		if (button2->Text == "Iniciar" || button2->Text == "Continuar") {
+			button2->Text = "pausar";
 			button3->Enabled = false;
 			timer1->Enabled = true;
 
 		}
 		else {
-			button2->Text = "Iniciar";
+			button2->Text = "Continuar";
 			button3->Enabled = true;
 			timer1->Enabled = false;
 		}
@@ -1072,6 +1090,7 @@ namespace SimPag {
 		timer1->Enabled = false;
 		pag_mem->Clear();
 		lista_proc->Clear();
+		lista_proce_mapa->Clear();
 		listbox_lista_proc->Items->Clear();
 		listBox1->Items->Clear();
 		listBox2->Items->Clear();
@@ -1082,10 +1101,10 @@ namespace SimPag {
 		listBox7->Items->Clear();
 		listBox8->Items->Clear();
 		aux_timer = 1;
-		qtd_proc_mapa = 0;
 		qtd_pag_ocu = 0;
 		unidade_tempo = 0;
 		qtd_listBox = 0;
+		maximo_proc = 0;
 		this->InitializaVariaveis(diretorio, tam_pag.ToString(), tam_mem.ToString(), modo_fila);
 	}
 	private: System::Void button1_Click(System::Object^  sender, System::EventArgs^  e) {

@@ -134,10 +134,14 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="MyForm.cpp" />
+    <ClCompile Include="telaResultado.cpp" />
     <ClCompile Include="TelaSim.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="MyForm.h">
+      <FileType>CppForm</FileType>
+    </ClInclude>
+    <ClInclude Include="telaResultado.h">
       <FileType>CppForm</FileType>
     </ClInclude>
     <ClInclude Include="TelaSim.h">

@@ -576,7 +576,7 @@ namespace SimPag {
 
 			Pagina ^bloco_mem;
 			pag_mem = gcnew List<Pagina^>();
-			int colun = arredondamento(paginas / 16.0);	// qtd de colunas
+			int colun = ceil(paginas / 16.0);	// qtd de colunas
 			qtd_listBox = colun;
 			if (paginas == 4) {
 				this->listBox1->Items->AddRange(gcnew cli::array< System::Object^  >(4) {
@@ -694,7 +694,7 @@ namespace SimPag {
 	}
 	public: void insere_mapa(Processo^ processo) {
 
-		int qtd_paginas = arredondamento(processo->tam / tam_pag);
+		int qtd_paginas = ceil(processo->tam / tam_pag);
 		int tamanho_processo = processo->tam;
 		int aux = 0, aux2 = 0, pos;
 		for (int i = 0; i < qtd_paginas; i++) {
@@ -931,7 +931,7 @@ namespace SimPag {
 
 	public: bool verifica_tamanho(Processo^ processo) {
 		double tam_processo = System::Convert::ToDouble(processo->tam);
-		int paginas = arredondamento(tam_processo / System::Convert::ToDouble(tam_pag));
+		int paginas = ceil(tam_processo / tam_pag);
 		if ((pag_mem->Count - qtd_pag_ocu) >= paginas) {
 			return true;
 		}
@@ -1030,13 +1030,7 @@ namespace SimPag {
 			button1->Enabled = false;
 		}
 	}
-	private: int arredondamento(double numero)
-	{
-		double fracao, inteiro;
-		fracao = modf(numero, &inteiro);
-		if (fracao> 0.0) return inteiro + 1;
-		else return System::Convert::ToInt32(inteiro);
-	}
+
 
 	private:  vector<string> explode(string s, char c)
 	{

@@ -72,6 +72,8 @@ namespace SimPag {
 				delete components;
 			}
 		}
+	private: int proc_esperaram = 0;
+	private: int proc_sem_esperar = 0;
 	private: int maximo_proc = 0;
 	private: List<Processo ^>^ lista_proce_mapa;
 	private: String ^ diretorio;
@@ -118,6 +120,33 @@ namespace SimPag {
 	private: System::Windows::Forms::Timer^  timer1;
 	private: System::Windows::Forms::NumericUpDown^  numericUpDown1;
 	private: System::Windows::Forms::Label^  label4;
+	private: System::Windows::Forms::GroupBox^  groupBox1;
+	private: System::Windows::Forms::Label^  label17;
+	private: System::Windows::Forms::Label^  label16;
+	private: System::Windows::Forms::Label^  lb_precisam_esperar;
+
+	private: System::Windows::Forms::Label^  lb_nao_espera;
+
+	private: System::Windows::Forms::Label^  lb_maximo_proc;
+
+	private: System::Windows::Forms::Label^  lb_qtd_proc;
+
+
+	private: System::Windows::Forms::Label^  label11;
+	private: System::Windows::Forms::Label^  label7;
+	private: System::Windows::Forms::Label^  label6;
+	private: System::Windows::Forms::Label^  label5;
+private: System::Windows::Forms::Label^  lb_frag_externa;
+
+private: System::Windows::Forms::Label^  lb_frag_interna;
+
+private: System::Windows::Forms::Label^  lb_tempo_espera_parcial;
+
+private: System::Windows::Forms::Label^  lb_tempo_de_espera_geral;
+
+
+private: System::Windows::Forms::Label^  label19;
+private: System::Windows::Forms::Label^  label18;
 	private: System::ComponentModel::IContainer^  components;
 
 
@@ -170,8 +199,26 @@ namespace SimPag {
 			this->timer1 = (gcnew System::Windows::Forms::Timer(this->components));
 			this->numericUpDown1 = (gcnew System::Windows::Forms::NumericUpDown());
 			this->label4 = (gcnew System::Windows::Forms::Label());
+			this->groupBox1 = (gcnew System::Windows::Forms::GroupBox());
+			this->lb_frag_externa = (gcnew System::Windows::Forms::Label());
+			this->lb_frag_interna = (gcnew System::Windows::Forms::Label());
+			this->lb_tempo_espera_parcial = (gcnew System::Windows::Forms::Label());
+			this->lb_tempo_de_espera_geral = (gcnew System::Windows::Forms::Label());
+			this->label19 = (gcnew System::Windows::Forms::Label());
+			this->label18 = (gcnew System::Windows::Forms::Label());
+			this->label17 = (gcnew System::Windows::Forms::Label());
+			this->label16 = (gcnew System::Windows::Forms::Label());
+			this->lb_precisam_esperar = (gcnew System::Windows::Forms::Label());
+			this->lb_nao_espera = (gcnew System::Windows::Forms::Label());
+			this->lb_maximo_proc = (gcnew System::Windows::Forms::Label());
+			this->lb_qtd_proc = (gcnew System::Windows::Forms::Label());
+			this->label11 = (gcnew System::Windows::Forms::Label());
+			this->label7 = (gcnew System::Windows::Forms::Label());
+			this->label6 = (gcnew System::Windows::Forms::Label());
+			this->label5 = (gcnew System::Windows::Forms::Label());
 			this->panel1->SuspendLayout();
 			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->numericUpDown1))->BeginInit();
+			this->groupBox1->SuspendLayout();
 			this->SuspendLayout();
 			// 
 			// button2
@@ -452,12 +499,183 @@ namespace SimPag {
 			this->label4->TabIndex = 29;
 			this->label4->Text = L"Velocidade da simulação:";
 			// 
+			// groupBox1
+			// 
+			this->groupBox1->Controls->Add(this->lb_frag_externa);
+			this->groupBox1->Controls->Add(this->lb_frag_interna);
+			this->groupBox1->Controls->Add(this->lb_tempo_espera_parcial);
+			this->groupBox1->Controls->Add(this->lb_tempo_de_espera_geral);
+			this->groupBox1->Controls->Add(this->label19);
+			this->groupBox1->Controls->Add(this->label18);
+			this->groupBox1->Controls->Add(this->label17);
+			this->groupBox1->Controls->Add(this->label16);
+			this->groupBox1->Controls->Add(this->lb_precisam_esperar);
+			this->groupBox1->Controls->Add(this->lb_nao_espera);
+			this->groupBox1->Controls->Add(this->lb_maximo_proc);
+			this->groupBox1->Controls->Add(this->lb_qtd_proc);
+			this->groupBox1->Controls->Add(this->label11);
+			this->groupBox1->Controls->Add(this->label7);
+			this->groupBox1->Controls->Add(this->label6);
+			this->groupBox1->Controls->Add(this->label5);
+			this->groupBox1->Location = System::Drawing::Point(301, 284);
+			this->groupBox1->Name = L"groupBox1";
+			this->groupBox1->Size = System::Drawing::Size(419, 141);
+			this->groupBox1->TabIndex = 35;
+			this->groupBox1->TabStop = false;
+			this->groupBox1->Text = L"Resultado da simulação";
+			this->groupBox1->Visible = false;
+			// 
+			// lb_frag_externa
+			// 
+			this->lb_frag_externa->AutoSize = true;
+			this->lb_frag_externa->Location = System::Drawing::Point(388, 101);
+			this->lb_frag_externa->Name = L"lb_frag_externa";
+			this->lb_frag_externa->Size = System::Drawing::Size(13, 13);
+			this->lb_frag_externa->TabIndex = 41;
+			this->lb_frag_externa->Text = L"0";
+			// 
+			// lb_frag_interna
+			// 
+			this->lb_frag_interna->AutoSize = true;
+			this->lb_frag_interna->Location = System::Drawing::Point(388, 76);
+			this->lb_frag_interna->Name = L"lb_frag_interna";
+			this->lb_frag_interna->Size = System::Drawing::Size(13, 13);
+			this->lb_frag_interna->TabIndex = 40;
+			this->lb_frag_interna->Text = L"0";
+			// 
+			// lb_tempo_espera_parcial
+			// 
+			this->lb_tempo_espera_parcial->AutoSize = true;
+			this->lb_tempo_espera_parcial->Location = System::Drawing::Point(388, 52);
+			this->lb_tempo_espera_parcial->Name = L"lb_tempo_espera_parcial";
+			this->lb_tempo_espera_parcial->Size = System::Drawing::Size(13, 13);
+			this->lb_tempo_espera_parcial->TabIndex = 39;
+			this->lb_tempo_espera_parcial->Text = L"0";
+			// 
+			// lb_tempo_de_espera_geral
+			// 
+			this->lb_tempo_de_espera_geral->AutoSize = true;
+			this->lb_tempo_de_espera_geral->Location = System::Drawing::Point(388, 26);
+			this->lb_tempo_de_espera_geral->Name = L"lb_tempo_de_espera_geral";
+			this->lb_tempo_de_espera_geral->Size = System::Drawing::Size(13, 13);
+			this->lb_tempo_de_espera_geral->TabIndex = 38;
+			this->lb_tempo_de_espera_geral->Text = L"0";
+			// 
+			// label19
+			// 
+			this->label19->AutoSize = true;
+			this->label19->Location = System::Drawing::Point(217, 101);
+			this->label19->Name = L"label19";
+			this->label19->Size = System::Drawing::Size(119, 13);
+			this->label19->TabIndex = 37;
+			this->label19->Text = L"Fragmentação externa: ";
+			// 
+			// label18
+			// 
+			this->label18->AutoSize = true;
+			this->label18->Location = System::Drawing::Point(217, 74);
+			this->label18->Name = L"label18";
+			this->label18->Size = System::Drawing::Size(116, 13);
+			this->label18->TabIndex = 36;
+			this->label18->Text = L"Fragmentação interna: ";
+			// 
+			// label17
+			// 
+			this->label17->AutoSize = true;
+			this->label17->Location = System::Drawing::Point(217, 52);
+			this->label17->Name = L"label17";
+			this->label17->Size = System::Drawing::Size(161, 13);
+			this->label17->TabIndex = 35;
+			this->label17->Text = L"Tempo médio de esperar parcial:";
+			// 
+			// label16
+			// 
+			this->label16->AutoSize = true;
+			this->label16->Location = System::Drawing::Point(217, 26);
+			this->label16->Name = L"label16";
+			this->label16->Size = System::Drawing::Size(153, 13);
+			this->label16->TabIndex = 34;
+			this->label16->Text = L"Tempo médio de espera geral: ";
+			// 
+			// lb_precisam_esperar
+			// 
+			this->lb_precisam_esperar->AutoSize = true;
+			this->lb_precisam_esperar->Location = System::Drawing::Point(172, 101);
+			this->lb_precisam_esperar->Name = L"lb_precisam_esperar";
+			this->lb_precisam_esperar->Size = System::Drawing::Size(13, 13);
+			this->lb_precisam_esperar->TabIndex = 33;
+			this->lb_precisam_esperar->Text = L"0";
+			// 
+			// lb_nao_espera
+			// 
+			this->lb_nao_espera->AutoSize = true;
+			this->lb_nao_espera->Location = System::Drawing::Point(172, 76);
+			this->lb_nao_espera->Name = L"lb_nao_espera";
+			this->lb_nao_espera->Size = System::Drawing::Size(13, 13);
+			this->lb_nao_espera->TabIndex = 32;
+			this->lb_nao_espera->Text = L"0";
+			// 
+			// lb_maximo_proc
+			// 
+			this->lb_maximo_proc->AutoSize = true;
+			this->lb_maximo_proc->Location = System::Drawing::Point(172, 52);
+			this->lb_maximo_proc->Name = L"lb_maximo_proc";
+			this->lb_maximo_proc->Size = System::Drawing::Size(13, 13);
+			this->lb_maximo_proc->TabIndex = 31;
+			this->lb_maximo_proc->Text = L"0";
+			// 
+			// lb_qtd_proc
+			// 
+			this->lb_qtd_proc->AutoSize = true;
+			this->lb_qtd_proc->Location = System::Drawing::Point(172, 26);
+			this->lb_qtd_proc->Name = L"lb_qtd_proc";
+			this->lb_qtd_proc->Size = System::Drawing::Size(13, 13);
+			this->lb_qtd_proc->TabIndex = 30;
+			this->lb_qtd_proc->Text = L"0";
+			// 
+			// label11
+			// 
+			this->label11->AutoSize = true;
+			this->label11->Location = System::Drawing::Point(8, 101);
+			this->label11->Name = L"label11";
+			this->label11->Size = System::Drawing::Size(103, 13);
+			this->label11->TabIndex = 29;
+			this->label11->Text = L"Precisaram esperar: ";
+			// 
+			// label7
+			// 
+			this->label7->AutoSize = true;
+			this->label7->Location = System::Drawing::Point(7, 76);
+			this->label7->Name = L"label7";
+			this->label7->Size = System::Drawing::Size(122, 13);
+			this->label7->TabIndex = 28;
+			this->label7->Text = L"Não precisaram esperar:";
+			// 
+			// label6
+			// 
+			this->label6->AutoSize = true;
+			this->label6->Location = System::Drawing::Point(6, 52);
+			this->label6->Name = L"label6";
+			this->label6->Size = System::Drawing::Size(144, 13);
+			this->label6->TabIndex = 27;
+			this->label6->Text = L"Máximo de proc. simultâneo: ";
+			// 
+			// label5
+			// 
+			this->label5->AutoSize = true;
+			this->label5->Location = System::Drawing::Point(6, 26);
+			this->label5->Name = L"label5";
+			this->label5->Size = System::Drawing::Size(82, 13);
+			this->label5->TabIndex = 26;
+			this->label5->Text = L"Qntd processo: ";
+			// 
 			// TelaSim
 			// 
 			this->AutoScaleDimensions = System::Drawing::SizeF(6, 13);
 			this->AutoScaleMode = System::Windows::Forms::AutoScaleMode::Font;
 			this->BackColor = System::Drawing::SystemColors::Control;
 			this->ClientSize = System::Drawing::Size(742, 478);
+			this->Controls->Add(this->groupBox1);
 			this->Controls->Add(this->label4);
 			this->Controls->Add(this->numericUpDown1);
 			this->Controls->Add(this->listBox8);
@@ -489,6 +707,8 @@ namespace SimPag {
 			this->panel1->ResumeLayout(false);
 			this->panel1->PerformLayout();
 			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->numericUpDown1))->EndInit();
+			this->groupBox1->ResumeLayout(false);
+			this->groupBox1->PerformLayout();
 			this->ResumeLayout(false);
 			this->PerformLayout();
 
@@ -524,6 +744,7 @@ namespace SimPag {
 					}
 
 					lb_qtd_lista_proc->Text = listbox_lista_proc->Items->Count.ToString();
+					lb_qtd_proc->Text = lista_proc->Count.ToString();
 					arq->Close();
 				}
 				finally
@@ -942,6 +1163,8 @@ namespace SimPag {
 
 			for (int i = 0; i < lista_proce_mapa->Count; i++) {
 				if (lista_proce_mapa[i]->tempo_remove == 0) {
+					if (lista_proce_mapa[i]->tempo_na_fila > 0)
+						proc_esperaram++;
 					lista_proce_mapa->RemoveAt(i);
 					i--;
 				}
@@ -959,6 +1182,9 @@ namespace SimPag {
 					while (lista_proc->Count != 0
 						&& verifica_tamanho(lista_proc[0])
 						&& lista_proc[0]->tempo_cria <= unidade_tempo) {
+
+						if (lista_proc[0]->tempo_cria == unidade_tempo)
+							proc_sem_esperar++;
 						processo = lista_proc[0];
 						
 						Processo ^processo_aux = gcnew Processo();
@@ -977,6 +1203,8 @@ namespace SimPag {
 					for (int i = 0; i < lista_proc->Count; i++) {
 						if (lista_proc[i]->tempo_cria <= unidade_tempo) {
 							if (verifica_tamanho(lista_proc[i])) {
+								if (lista_proc[i]->tempo_cria == unidade_tempo)
+									proc_sem_esperar++;
 								processo = lista_proc[i];
 								Processo ^processo_aux = gcnew Processo();
 								processo_aux->ID = processo->ID;
@@ -1031,6 +1259,8 @@ namespace SimPag {
 			}
 			for (int i = 0; i < lista_proce_mapa->Count; i++) {
 				if (lista_proce_mapa[i]->tempo_remove == -1) {
+					if (lista_proce_mapa[i]->tempo_na_fila > 0)
+						proc_esperaram++;
 					lista_proce_mapa->RemoveAt(i);
 					i--;
 				}
@@ -1043,9 +1273,16 @@ namespace SimPag {
 		else
 		{
 			timer1->Enabled = false;
-			telaResultado ^telaresultado = gcnew telaResultado();
-			MessageBox::Show("Simulação encerrada.");
-			telaresultado->ShowDialog();
+			MessageBox::Show("Simulação finalizada."); 
+			lb_precisam_esperar->Text = proc_esperaram.ToString();
+			lb_nao_espera->Text = proc_sem_esperar.ToString();
+			lb_maximo_proc->Text = maximo_proc.ToString();
+
+			
+			groupBox1->Visible = true;
+			button2->Enabled = false;
+			button2->Text = "Iniciar";
+			button3->Enabled = true;
 		}
 	}
 
@@ -1105,6 +1342,10 @@ namespace SimPag {
 		unidade_tempo = 0;
 		qtd_listBox = 0;
 		maximo_proc = 0;
+		proc_esperaram = 0;
+		proc_sem_esperar = 0;
+		button2->Enabled = true;
+		groupBox1->Visible = false;
 		this->InitializaVariaveis(diretorio, tam_pag.ToString(), tam_mem.ToString(), modo_fila);
 	}
 	private: System::Void button1_Click(System::Object^  sender, System::EventArgs^  e) {

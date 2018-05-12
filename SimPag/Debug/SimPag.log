@@ -1,15 +1,15 @@
 ﻿  MyForm.cpp
-c:\users\chewbie\desktop\simpag\simpag\telasim.h(552): warning C4244: 'inicializando': conversão de 'double' para 'int', possível perda de dados
-c:\users\chewbie\desktop\simpag\simpag\telasim.h(675): warning C4244: 'inicializando': conversão de 'double' para 'int', possível perda de dados
-c:\users\chewbie\desktop\simpag\simpag\telasim.h(676): warning C4244: 'inicializando': conversão de 'double' para 'int', possível perda de dados
-c:\users\chewbie\desktop\simpag\simpag\telasim.h(912): warning C4244: 'inicializando': conversão de 'double' para 'int', possível perda de dados
-c:\users\chewbie\desktop\simpag\simpag\telasim.h(924): warning C4101: 'processo': variável local não referenciada
+c:\users\chewbie\desktop\simpag\simpag\telasim.h(773): warning C4244: 'inicializando': conversão de 'double' para 'int', possível perda de dados
+c:\users\chewbie\desktop\simpag\simpag\telasim.h(896): warning C4244: 'inicializando': conversão de 'double' para 'int', possível perda de dados
+c:\users\chewbie\desktop\simpag\simpag\telasim.h(897): warning C4244: 'inicializando': conversão de 'double' para 'int', possível perda de dados
+c:\users\chewbie\desktop\simpag\simpag\telasim.h(1133): warning C4244: 'inicializando': conversão de 'double' para 'int', possível perda de dados
+c:\users\chewbie\desktop\simpag\simpag\telasim.h(1145): warning C4101: 'processo': variável local não referenciada
 c:\users\chewbie\desktop\simpag\simpag\myform.cpp(5): warning C4829: Parâmetros possivelmente incorretos para função main. Considere o uso de 'int main(Platform::Array<Platform::String^>^ argv)'
   TelaSim.cpp
-c:\users\chewbie\desktop\simpag\simpag\telasim.h(552): warning C4244: 'inicializando': conversão de 'double' para 'int', possível perda de dados
-c:\users\chewbie\desktop\simpag\simpag\telasim.h(675): warning C4244: 'inicializando': conversão de 'double' para 'int', possível perda de dados
-c:\users\chewbie\desktop\simpag\simpag\telasim.h(676): warning C4244: 'inicializando': conversão de 'double' para 'int', possível perda de dados
-c:\users\chewbie\desktop\simpag\simpag\telasim.h(912): warning C4244: 'inicializando': conversão de 'double' para 'int', possível perda de dados
-c:\users\chewbie\desktop\simpag\simpag\telasim.h(924): warning C4101: 'processo': variável local não referenciada
+c:\users\chewbie\desktop\simpag\simpag\telasim.h(773): warning C4244: 'inicializando': conversão de 'double' para 'int', possível perda de dados
+c:\users\chewbie\desktop\simpag\simpag\telasim.h(896): warning C4244: 'inicializando': conversão de 'double' para 'int', possível perda de dados
+c:\users\chewbie\desktop\simpag\simpag\telasim.h(897): warning C4244: 'inicializando': conversão de 'double' para 'int', possível perda de dados
+c:\users\chewbie\desktop\simpag\simpag\telasim.h(1133): warning C4244: 'inicializando': conversão de 'double' para 'int', possível perda de dados
+c:\users\chewbie\desktop\simpag\simpag\telasim.h(1145): warning C4101: 'processo': variável local não referenciada
   Gerando Código...
   SimPag.vcxproj -> C:\Users\Chewbie\Desktop\SimPag\Debug\SimPag.exe

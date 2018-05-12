@@ -7,7 +7,6 @@
 #include <list>
 #include <chrono>
 #include <math.h>
-#include "telaResultado.h"
 
 namespace SimPag {
 
@@ -72,6 +71,10 @@ namespace SimPag {
 				delete components;
 			}
 		}
+	private: int mem_usado = 0;
+	private: int frag_inter = 0;
+	private: int qtd_proc;
+	private: double total_tempo_fila= 0;
 	private: int proc_esperaram = 0;
 	private: int proc_sem_esperar = 0;
 	private: int maximo_proc = 0;
@@ -89,7 +92,8 @@ namespace SimPag {
 	private: System::Windows::Forms::Button^  button2;
 	private: System::Windows::Forms::Label^  label99;
 	private: System::Windows::Forms::Button^  button3;
-	private: System::Windows::Forms::ListBox^  listbox_log;
+	private: System::Windows::Forms::ListBox^  listBox_logSaida;
+
 	private: System::Windows::Forms::Label^  label2;
 	private: System::Windows::Forms::ListBox^  listbox_lista_proc;
 	private: System::Windows::Forms::Label^  label1;
@@ -171,7 +175,7 @@ private: System::Windows::Forms::Label^  label18;
 			this->button2 = (gcnew System::Windows::Forms::Button());
 			this->label99 = (gcnew System::Windows::Forms::Label());
 			this->button3 = (gcnew System::Windows::Forms::Button());
-			this->listbox_log = (gcnew System::Windows::Forms::ListBox());
+			this->listBox_logSaida = (gcnew System::Windows::Forms::ListBox());
 			this->label2 = (gcnew System::Windows::Forms::Label());
 			this->listbox_lista_proc = (gcnew System::Windows::Forms::ListBox());
 			this->label1 = (gcnew System::Windows::Forms::Label());
@@ -250,13 +254,13 @@ private: System::Windows::Forms::Label^  label18;
 			this->button3->UseVisualStyleBackColor = true;
 			this->button3->Click += gcnew System::EventHandler(this, &TelaSim::button3_Click);
 			// 
-			// listbox_log
+			// listBox_logSaida
 			// 
-			this->listbox_log->FormattingEnabled = true;
-			this->listbox_log->Location = System::Drawing::Point(157, 37);
-			this->listbox_log->Name = L"listbox_log";
-			this->listbox_log->Size = System::Drawing::Size(124, 212);
-			this->listbox_log->TabIndex = 6;
+			this->listBox_logSaida->FormattingEnabled = true;
+			this->listBox_logSaida->Location = System::Drawing::Point(157, 37);
+			this->listBox_logSaida->Name = L"listBox_logSaida";
+			this->listBox_logSaida->Size = System::Drawing::Size(124, 212);
+			this->listBox_logSaida->TabIndex = 6;
 			// 
 			// label2
 			// 
@@ -695,7 +699,7 @@ private: System::Windows::Forms::Label^  label18;
 			this->Controls->Add(this->label3);
 			this->Controls->Add(this->listbox_lista_proc);
 			this->Controls->Add(this->label2);
-			this->Controls->Add(this->listbox_log);
+			this->Controls->Add(this->listBox_logSaida);
 			this->Controls->Add(this->button3);
 			this->Controls->Add(this->button2);
 			this->MaximizeBox = false;
@@ -745,6 +749,7 @@ private: System::Windows::Forms::Label^  label18;
 
 					lb_qtd_lista_proc->Text = listbox_lista_proc->Items->Count.ToString();
 					lb_qtd_proc->Text = lista_proc->Count.ToString();
+					this->qtd_proc = lista_proc->Count;
 					arq->Close();
 				}
 				finally
@@ -757,7 +762,7 @@ private: System::Windows::Forms::Label^  label18;
 			catch (Exception^ e)
 			{
 				// Let the user know what went wrong.
-				MessageBox::Show("Erro ao abrir o arquivo " + diretorio + "\n" + e->Message);
+				MessageBox::Show("Erro ao processar o arquivo " + diretorio + "\n" + e->Message);
 
 			}
 
@@ -907,11 +912,14 @@ private: System::Windows::Forms::Label^  label18;
 					pag_mem[j]->processo = proc;
 					if (i == (qtd_paginas - 1)) {
 						pag_mem[j]->processo->tam = tamanho_processo;
+						mem_usado += tamanho_processo;
 					}
 					else {
 						pag_mem[j]->processo->tam = tam_pag;
+						mem_usado += tam_pag;
 						tamanho_processo -= tam_pag;
 					}
+					listBox_logSaida->Items->Insert(0, unidade_tempo + "," + processo->ID + "," + j + ",ENTROU");
 					aux = j;
 					qtd_pag_ocu++;
 					break;
@@ -1136,21 +1144,29 @@ private: System::Windows::Forms::Label^  label18;
 		}
 		else
 		{
+			if ((tam_mem - mem_usado) >= tam_processo)
+				frag_inter++;
 			return false;
 		}
 	}
 
 	public: void simulacao() {
-		aux_timer = 0;
-		Processo ^processo;
-		unidade_tempo++;
-		lb_unidade_tempo->Text = Convert::ToString(unidade_tempo);
+		
 		if (lista_proc->Count != 0 || qtd_pag_ocu != 0) {
+			aux_timer = 0;
+			Processo ^processo;
+			unidade_tempo++;
+			lb_unidade_tempo->Text = Convert::ToString(unidade_tempo);
 			for (int i = 0; i < pag_mem->Count; i++) {
 				if (pag_mem[i]->ocupado == true) {
 					if (pag_mem[i]->processo->tempo_remove == 0) {
 						pag_mem[i]->ocupado = false;
+						if (pag_mem[i]->processo->tam != tam_pag)
+							mem_usado -= pag_mem[i]->processo->tam;
+						else
+							mem_usado -= tam_pag;
 						limpa_mem(pag_mem[i]);
+						listBox_logSaida->Items->Insert(0, unidade_tempo + "," + pag_mem[i]->processo->ID + "," + i + ",SAIU");
 						qtd_pag_ocu--;
 					}
 					else
@@ -1165,6 +1181,7 @@ private: System::Windows::Forms::Label^  label18;
 				if (lista_proce_mapa[i]->tempo_remove == 0) {
 					if (lista_proce_mapa[i]->tempo_na_fila > 0)
 						proc_esperaram++;
+					total_tempo_fila += lista_proce_mapa[i]->tempo_na_fila;
 					lista_proce_mapa->RemoveAt(i);
 					i--;
 				}
@@ -1223,8 +1240,6 @@ private: System::Windows::Forms::Label^  label18;
 							break;
 						}
 					}
-
-
 				}
 
 				
@@ -1252,6 +1267,11 @@ private: System::Windows::Forms::Label^  label18;
 				if (pag_mem[i]->ocupado == true) {
 					if (pag_mem[i]->processo->tempo_remove == -1) {
 						pag_mem[i]->ocupado = false;
+						if (pag_mem[i]->processo->tam != tam_pag)
+							mem_usado -= pag_mem[i]->processo->tam;
+						else
+							mem_usado -= tam_pag;
+						listBox_logSaida->Items->Insert(0, unidade_tempo + "," + pag_mem[i]->processo->ID + "," + i + ",SAIU");
 						limpa_mem(pag_mem[i]);
 						qtd_pag_ocu--;
 					}
@@ -1261,6 +1281,7 @@ private: System::Windows::Forms::Label^  label18;
 				if (lista_proce_mapa[i]->tempo_remove == -1) {
 					if (lista_proce_mapa[i]->tempo_na_fila > 0)
 						proc_esperaram++;
+					total_tempo_fila += lista_proce_mapa[i]->tempo_na_fila;
 					lista_proce_mapa->RemoveAt(i);
 					i--;
 				}
@@ -1277,6 +1298,9 @@ private: System::Windows::Forms::Label^  label18;
 			lb_precisam_esperar->Text = proc_esperaram.ToString();
 			lb_nao_espera->Text = proc_sem_esperar.ToString();
 			lb_maximo_proc->Text = maximo_proc.ToString();
+			lb_tempo_de_espera_geral->Text = System::String::Format("{0:C2}", (total_tempo_fila / this->qtd_proc).ToString());
+			lb_tempo_espera_parcial->Text = System::String::Format("{0:C2}", (total_tempo_fila / this->proc_esperaram).ToString());
+			lb_frag_interna->Text = frag_inter.ToString();
 
 			
 			groupBox1->Visible = true;
@@ -1346,6 +1370,11 @@ private: System::Windows::Forms::Label^  label18;
 		proc_sem_esperar = 0;
 		button2->Enabled = true;
 		groupBox1->Visible = false;
+		qtd_proc = 0;
+		total_tempo_fila = 0;
+		mem_usado = 0;
+		frag_inter = 0;
+
 		this->InitializaVariaveis(diretorio, tam_pag.ToString(), tam_mem.ToString(), modo_fila);
 	}
 	private: System::Void button1_Click(System::Object^  sender, System::EventArgs^  e) {

@@ -48,6 +48,7 @@ namespace SimPag {
 				delete components;
 			}
 		}
+
 	private: System::Windows::Forms::ComboBox^  comboBox1;
 	private: System::Windows::Forms::Label^  label1;
 	private: System::Windows::Forms::Label^  label2;

@@ -5,9 +5,7 @@
 #include <string>
 #include <vector>
 #include <list>
-#include <chrono>
 #include <math.h>
-
 namespace SimPag {
 
 	using namespace System;
@@ -71,6 +69,7 @@ namespace SimPag {
 				delete components;
 			}
 		}
+	private: String ^ logSaida;
 	private: int mem_usado = 0;
 	private: int frag_inter = 0;
 	private: int qtd_proc;
@@ -920,6 +919,7 @@ private: System::Windows::Forms::Label^  label18;
 						tamanho_processo -= tam_pag;
 					}
 					listBox_logSaida->Items->Insert(0, unidade_tempo + "," + processo->ID + "," + j + ",ENTROU");
+					logSaida += (unidade_tempo + "," + processo->ID + "," + j + ",ENTROU\n");
 					aux = j;
 					qtd_pag_ocu++;
 					break;
@@ -1167,6 +1167,7 @@ private: System::Windows::Forms::Label^  label18;
 							mem_usado -= tam_pag;
 						limpa_mem(pag_mem[i]);
 						listBox_logSaida->Items->Insert(0, unidade_tempo + "," + pag_mem[i]->processo->ID + "," + i + ",SAIU");
+						logSaida += (unidade_tempo + "," + pag_mem[i]->processo->ID + "," + i + ",SAIU\n");
 						qtd_pag_ocu--;
 					}
 					else
@@ -1272,6 +1273,7 @@ private: System::Windows::Forms::Label^  label18;
 						else
 							mem_usado -= tam_pag;
 						listBox_logSaida->Items->Insert(0, unidade_tempo + "," + pag_mem[i]->processo->ID + "," + i + ",SAIU");
+						logSaida += ( unidade_tempo + "," + pag_mem[i]->processo->ID + "," + i + ",SAIU\n");
 						limpa_mem(pag_mem[i]);
 						qtd_pag_ocu--;
 					}
@@ -1294,12 +1296,33 @@ private: System::Windows::Forms::Label^  label18;
 		else
 		{
 			timer1->Enabled = false;
-			MessageBox::Show("Simulação finalizada."); 
+			MessageBox::Show("Simulação concluida.");
+			String^ dir;
+			FolderBrowserDialog ^folderBrowserDialog1 = gcnew FolderBrowserDialog();
+			if ((folderBrowserDialog1->ShowDialog()) == System::Windows::Forms::DialogResult::OK) {
+				dir = folderBrowserDialog1->SelectedPath;
+				try {
+					StreamWriter ^arq = gcnew StreamWriter(dir + "\\resultado da simulação.csv");
+					arq->Write(logSaida, false);
+					arq->Close();
+				}
+				catch (Exception ^e) {
+					MessageBox::Show(e->Message);
+				}
+				
+			}
 			lb_precisam_esperar->Text = proc_esperaram.ToString();
 			lb_nao_espera->Text = proc_sem_esperar.ToString();
 			lb_maximo_proc->Text = maximo_proc.ToString();
-			lb_tempo_de_espera_geral->Text = System::String::Format("{0:C2}", (total_tempo_fila / this->qtd_proc).ToString());
-			lb_tempo_espera_parcial->Text = System::String::Format("{0:C2}", (total_tempo_fila / this->proc_esperaram).ToString());
+			float aux = total_tempo_fila / this->qtd_proc;
+			lb_tempo_de_espera_geral->Text = floorf((aux * 100) / 100).ToString();
+			if (proc_esperaram != 0) {
+				aux = total_tempo_fila / this->proc_esperaram;
+				lb_tempo_espera_parcial->Text = floorf((aux * 100) / 100).ToString();
+			} 
+			else
+				lb_tempo_espera_parcial->Text = "0";
+
 			lb_frag_interna->Text = frag_inter.ToString();
 
 			
@@ -1374,6 +1397,7 @@ private: System::Windows::Forms::Label^  label18;
 		total_tempo_fila = 0;
 		mem_usado = 0;
 		frag_inter = 0;
+		logSaida = "";
 
 		this->InitializaVariaveis(diretorio, tam_pag.ToString(), tam_mem.ToString(), modo_fila);
 	}
